@@ -1,3 +1,3 @@
-FIX: git ignore
+NEW: Camera
 
-- Modification du Git Ignore
+- Ajout des caméras et de GUI

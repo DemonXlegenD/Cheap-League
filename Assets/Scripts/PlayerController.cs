@@ -5,24 +5,26 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class FPSController : MonoBehaviour
 {
-    public Camera playerCamera;
-    public float walkSpeed = 6f;
-    public float runSpeed = 12f;
-    public float jumpPower = 7f;
-    public float gravity = 10f;
+    [SerializeField] private Camera playerCamera;
+    [SerializeField] private float walkSpeed = 6f;
+    [SerializeField] private float runSpeed = 12f;
+    [SerializeField] private float jumpPower = 7f;
+    [SerializeField] private float gravity = 10f;
+    [SerializeField] private float lookSpeed = 2f;
+    [SerializeField] private float lookXLimit = 45f;
 
 
-    public float lookSpeed = 2f;
-    public float lookXLimit = 45f;
+    private Vector3 moveDirection = Vector3.zero;
+    private float rotationX = 0;
 
+    private bool canMove = true;
 
-    Vector3 moveDirection = Vector3.zero;
-    float rotationX = 0;
+    [SerializeField, StringSelection("Horizontal 1", "Horizontal 2")] private string inputHorizontalName;
+    [SerializeField, StringSelection("Vertical 1", "Vertical 2")] private string inputVerticalName;
+    [SerializeField, StringSelection("Jump 1", "Jump 2")] private string inputJumpName;
+    [SerializeField, StringSelection("Run 1", "Run 2")] private string inputRunName;
 
-    public bool canMove = true;
-
-
-    CharacterController characterController;
+    private CharacterController characterController;
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -38,16 +40,16 @@ public class FPSController : MonoBehaviour
         Vector3 right = transform.TransformDirection(Vector3.right);
 
         // Press Left Shift to run
-        bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
+        bool isRunning = Input.GetButton(inputRunName);
+        float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis(inputVerticalName) : 0;
+        float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis(inputHorizontalName) : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
         #endregion
 
         #region Handles Jumping
-        if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
+        if (Input.GetButton(inputJumpName) && canMove && characterController.isGrounded)
         {
             moveDirection.y = jumpPower;
         }

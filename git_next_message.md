@@ -1,3 +1,3 @@
-NEW: Camera
+NEW: Menu Scene
 
-- Ajout des caméras et de GUI
+- Création d'un menu scene

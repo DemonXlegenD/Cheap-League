@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -17,6 +15,41 @@ public class FPSController : MonoBehaviour
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
 
+    private float maxStamina = 7.5f;
+    private float stamina = 7.5f;
+
+    private float leftRecuperationDelay = 0f;
+    private float recuperationDelay = 2;
+
+    // Getter et Setter pour maxStamina
+    public float MaxStamina
+    {
+        get { return maxStamina; }
+        set { maxStamina = value; }
+    }
+
+    // Getter et Setter pour stamina
+    public float Stamina
+    {
+        get { return stamina; }
+        set { stamina = value; }
+    }
+
+    // Getter et Setter pour leftRecuperationDelay
+    public float LeftRecuperationDelay
+    {
+        get { return leftRecuperationDelay; }
+        set { leftRecuperationDelay = value; }
+    }
+
+    // Getter et Setter pour recuperationDelay
+    public float RecuperationDelay
+    {
+        get { return recuperationDelay; }
+        set { recuperationDelay = value; }
+    }
+
+    private bool canRun = true;
     private bool canMove = true;
 
     [SerializeField, StringSelection("Horizontal 1", "Horizontal 2")] private string inputHorizontalName;
@@ -25,6 +58,7 @@ public class FPSController : MonoBehaviour
     [SerializeField, StringSelection("Run 1", "Run 2")] private string inputRunName;
 
     private CharacterController characterController;
+    private
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -41,8 +75,10 @@ public class FPSController : MonoBehaviour
 
         // Press Left Shift to run
         bool isRunning = Input.GetButton(inputRunName);
-        float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis(inputVerticalName) : 0;
-        float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis(inputHorizontalName) : 0;
+       
+        float curSpeedX = canMove ? (isRunning && canRun ? runSpeed : walkSpeed) * Input.GetAxis(inputVerticalName) : 0;
+        float curSpeedY = canMove ? (isRunning && canRun ? runSpeed : walkSpeed) * Input.GetAxis(inputHorizontalName) : 0;
+        bool isMoving = curSpeedX != 0 || curSpeedY != 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
@@ -75,7 +111,54 @@ public class FPSController : MonoBehaviour
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
-
         #endregion
+
+        if (canRun && isMoving)
+        {
+            if (isRunning)
+            {
+                stamina -= Time.deltaTime;
+            }
+            else
+            {
+                if (stamina < maxStamina)
+                {
+                    stamina += Time.deltaTime * 3;
+                }
+                else
+                {
+                    stamina = maxStamina;
+                    leftRecuperationDelay = 0f;
+                }
+            }
+
+            if (stamina <= 0f)
+            {
+                stamina = 0f;
+                canRun = false;
+                leftRecuperationDelay = recuperationDelay;
+            }
+        }
+        else
+        {
+            if (leftRecuperationDelay <= 0f)
+            {
+                leftRecuperationDelay = 0f;
+                if (stamina < maxStamina)
+                {
+                    stamina += Time.deltaTime * 2;
+                }
+                else
+                {
+                    stamina = maxStamina;
+                    canRun = true;
+                }
+            }
+            else
+            {
+                leftRecuperationDelay -= Time.deltaTime;
+            }
+        }
+
     }
 }

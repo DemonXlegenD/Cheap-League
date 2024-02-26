@@ -1,3 +1,3 @@
-FIX: git ignore
+NEW: Menu Scene
 
-- Modification du Git Ignore
+- Création d'un menu scene

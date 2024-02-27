@@ -12,9 +12,6 @@ public class LoadingBar : MonoBehaviour
 
     private FPSController fpsController;
 
-    [Header("Slider")]
-    [SerializeField] private Slider loadingSlider;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +22,6 @@ public class LoadingBar : MonoBehaviour
     void Update()
     {
         float progressValue = Mathf.Clamp01(fpsController.Stamina / fpsController.MaxStamina);
-        loadingSlider.value = progressValue;
-            
+        GetComponent<Slider>().value = progressValue;
     }
 }

@@ -1093,7 +1093,6 @@ GameObject:
   - component: {fileID: 740083770}
   - component: {fileID: 740083769}
   - component: {fileID: 740083768}
-  - component: {fileID: 740083772}
   m_Layer: 5
   m_Name: PlayerGui2
   m_TagString: Untagged
@@ -1184,20 +1183,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &740083772
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 740083767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 231f19990ff9fd14fbb3bc74815b0e4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 627166284}
-  loadingSlider: {fileID: 1922817229}
 --- !u!1 &741329937
 GameObject:
   m_ObjectHideFlags: 0
@@ -1295,7 +1280,6 @@ GameObject:
   - component: {fileID: 842339958}
   - component: {fileID: 842339957}
   - component: {fileID: 842339956}
-  - component: {fileID: 842339960}
   m_Layer: 5
   m_Name: PlayerGui1
   m_TagString: Untagged
@@ -1386,20 +1370,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &842339960
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 842339955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 231f19990ff9fd14fbb3bc74815b0e4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1518261167}
-  loadingSlider: {fileID: 1419320206}
 --- !u!1 &1295312124
 GameObject:
   m_ObjectHideFlags: 0
@@ -1670,6 +1640,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86e9ead5b48481847802c433dae9b6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1518261167}
+  loadingSlider: {fileID: 1419320206}
 --- !u!114 &1419320206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2070,6 +2042,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86e9ead5b48481847802c433dae9b6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 627166284}
+  loadingSlider: {fileID: 1922817229}
 --- !u!114 &1922817229
 MonoBehaviour:
   m_ObjectHideFlags: 0

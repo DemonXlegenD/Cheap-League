@@ -11,10 +11,12 @@ public class FPSController : MonoBehaviour
     public float jumpPower = 7f;
     public float gravity = 10f;
 
-
     public float lookSpeed = 2f;
     public float lookXLimit = 45f;
 
+    private Rigidbody rb;
+    private float moveForce = 1.0f;
+    private float vert;
 
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
@@ -28,6 +30,7 @@ public class FPSController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -36,6 +39,7 @@ public class FPSController : MonoBehaviour
         #region Handles Movment
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
+        vert = Input.GetAxis("Vertical");
 
         // Press Left Shift to run
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
@@ -75,5 +79,11 @@ public class FPSController : MonoBehaviour
         }
 
         #endregion
+    }
+
+    private void FixedUpdate()
+    {
+        rb.AddForce(transform.forward * moveForce * vert);
+        Debug.Log(transform.forward * moveForce * vert);
     }
 }

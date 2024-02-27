@@ -27,9 +27,9 @@ public class MainHandler : MonoBehaviour
 
     void OnGoalScored()
     {
-        //ball.transform.position = new Vector3(0, 0.5f, 0);
-        //ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        //ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        ball.transform.position = new Vector3(0, 1.0f, 0);
+        ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
         Debug.Log("Scored !!!");
     }

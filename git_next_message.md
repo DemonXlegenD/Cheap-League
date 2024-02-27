@@ -1,3 +1,3 @@
-NEW: Menu Scene
+FIX: Maurad
 
-- Création d'un menu scene
+- Maurad a tout cassé

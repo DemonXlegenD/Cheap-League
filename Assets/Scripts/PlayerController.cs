@@ -11,10 +11,6 @@ public class FPSController : MonoBehaviour
     [SerializeField] private float lookSpeed = 2f;
     [SerializeField] private float lookXLimit = 45f;
 
-
-    public float lookSpeed = 2f;
-    public float lookXLimit = 45f;
-
     private Rigidbody rb;
     private float moveForce = 1.0f;
     private float vert;

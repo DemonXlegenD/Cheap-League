@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class GoalHandler : MonoBehaviour
 {
-
-    public GameObject goal;
+    private MainHandler mainHandler;
+    public string Team;
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("OK JSUIS PRET TIRER LE BALLON DEDANS LO");
+        mainHandler = GameObject.Find("Workspace").GetComponent<MainHandler>();
     }
 
     // Update is called once per frame
@@ -22,7 +22,9 @@ public class GoalHandler : MonoBehaviour
     {
         if (infoCollision.gameObject.tag == "Ball")
         {
-            Debug.Log("IL A MARQUE TROPO FROOT");
+            Debug.Log(Team + " SCORED !");
+
+            mainHandler.m_OnGoalScored.Invoke();
         }
     }
 }

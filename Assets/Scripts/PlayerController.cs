@@ -12,11 +12,20 @@ public class FPSController : MonoBehaviour
     [SerializeField] private float lookXLimit = 45f;
 
 
+    public float lookSpeed = 2f;
+    public float lookXLimit = 45f;
+
+    private Rigidbody rb;
+    private float moveForce = 1.0f;
+    private float vert;
+
+
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
 
     private float maxStamina = 7.5f;
     private float stamina = 7.5f;
+
 
     private float leftRecuperationDelay = 0f;
     private float recuperationDelay = 2;
@@ -64,6 +73,7 @@ public class FPSController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        rb = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -72,6 +82,7 @@ public class FPSController : MonoBehaviour
         #region Handles Movment
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
+        vert = Input.GetAxis("Vertical");
 
         // Press Left Shift to run
         bool isRunning = Input.GetButton(inputRunName);
@@ -160,5 +171,11 @@ public class FPSController : MonoBehaviour
             }
         }
 
+    }
+
+    private void FixedUpdate()
+    {
+        rb.AddForce(transform.forward * moveForce * vert);
+        Debug.Log(transform.forward * moveForce * vert);
     }
 }

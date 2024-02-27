@@ -1,3 +1,3 @@
-FIX: Maurad
+NEW: GUI
 
-- Maurad a tout cassé
+- Création du GUI du joueur

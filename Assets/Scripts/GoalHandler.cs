@@ -5,14 +5,14 @@ using UnityEngine;
 public class GoalHandler : MonoBehaviour
 {
     private MainHandler mainHandler;
-    [SerializeField] private ColorNameTeam colorTeam;
-
-
+    public string Team;
+    // Start is called before the first frame update
     void Start()
     {
         mainHandler = GameObject.Find("Workspace").GetComponent<MainHandler>();
     }
 
+    // Update is called once per frame
     void Update()
     {
         
@@ -22,8 +22,8 @@ public class GoalHandler : MonoBehaviour
     {
         if (infoCollision.gameObject.tag == "Ball")
         {
-            Debug.Log(colorTeam + " SCORED !");
-            mainHandler.GetTeamManager().GetTeamByColor(colorTeam).GetComponent<Team>().TeamHasScored();
+            Debug.Log(Team + " SCORED !");
+
             mainHandler.m_OnGoalScored.Invoke();
         }
     }

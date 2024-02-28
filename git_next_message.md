@@ -1,4 +1,3 @@
-ENH: Score
+NEW: Collection
 
-- Scores affichés
-- Quand un but est marqué, le score s'incrémente
+- Création d'un template Collection afin de faciliter le travail pour stocker des items et les récupérer de manières intelligentes et variées

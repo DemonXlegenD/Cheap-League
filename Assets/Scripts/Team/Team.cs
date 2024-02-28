@@ -1,37 +1,71 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
+public enum ColorNameTeam
+{
+    Orange,
+    Blue,
+    White,
+}
 public class Team : MonoBehaviour
 {
-    [SerializeField, StringSelection("Orange", "Blue", "White")] private string teamName;
+    [Header("Team Settings")]
+    [SerializeField] private ColorNameTeam teamColor;
+    [SerializeField] private string teamName;
     [SerializeField] private string teamDescription;
-    [SerializeField] private List<GameObject> playersList = new List<GameObject>();
-    [SerializeField] private Dictionary<string, GameObject> playersDict = new Dictionary<string, GameObject>();
 
+    [Header("Team Players")]
+    [SerializeField] private Collection<GameObject> playersCollection;
+
+    [SerializeField] private Score scoreTeam;
+
+    public UnityEvent OnGoalTeamScored;
+
+    public void Start()
+    {
+        OnGoalTeamScored.AddListener(TeamHasScored);
+    }
     #region Getter
 
-    public string TeamName() {  return teamName; }
-    public string TeamDescription() {  return teamDescription; }
+    public ColorNameTeam GetTeamColor() {  return teamColor; }
+    public string GetTeamNameString() {  return teamName; }
+    public string GetTeamDescription() {  return teamDescription; }
     public GameObject GetPlayerByIndex(int index)
     {
-        if (index >= playersList.Count) return null;
-        return playersList[index];
+        return playersCollection.FindItemByIndex(index);
     }
 
     public GameObject GetPLayerByName(string name)
     {
-        if (name == null) return null;
-        return playersDict[name];
+        return playersCollection.FindItemBykey(name);
     }
 
-    public List<GameObject> GetPlayers() { return playersList; }
+    public List<GameObject> GetPlayers() { return playersCollection.GetItemsList(); }
 
     #endregion
 
+    #region Add
+
+    public void AddPlayer(GameObject player)
+    {
+        playersCollection.AddItem(player.GetInstanceID().ToString(),player);
+    }
+    #endregion
+
+
+    public void TeamHasScored()
+    {
+        scoreTeam.IncreaseScore();
+    }
+    public void Update()
+    {
+    }
+
     public void OnDestroy()
     {
-        playersList.Clear();
-        playersDict.Clear();
+        playersCollection.ClearItems();
     }
 }

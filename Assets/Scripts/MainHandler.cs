@@ -33,6 +33,7 @@ public class MainHandler : MonoBehaviour
         ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
         ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
+
         Debug.Log("Scored !!!");
     }
 

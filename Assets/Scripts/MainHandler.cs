@@ -8,6 +8,7 @@ public class MainHandler : MonoBehaviour
 {
     public UnityEvent m_OnGoalScored;
 
+    public ScoreController scoreController;
     public GameObject ball;
 
     // Start is called before the first frame update
@@ -15,7 +16,7 @@ public class MainHandler : MonoBehaviour
     {
         if (m_OnGoalScored == null)
             m_OnGoalScored = new UnityEvent();
-
+        scoreController = new ScoreController();
         m_OnGoalScored.AddListener(OnGoalScored);
     }
 

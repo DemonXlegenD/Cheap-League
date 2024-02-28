@@ -1,30 +1,20 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
-    [SerializeField] private int maxScore = 10;
-    [SerializeField] private int currentScore = 0;
+    [SerializeField, Min(0)] private int maxScore = 10;
+    [SerializeField, Min(0)] private int currentScore = 0;
 
-    [SerializeField] private GameObject scoreTextGameObject;
-    private TextMeshPro scoreText;
+    [SerializeField] private List<ScoreGUI> scoreGuiList = new List<ScoreGUI>();
 
-    [SerializeField]
-    private GameObject player;
+    [SerializeField] private GameObject player;
 
     public void Start()
     {
-        player = transform.parent.parent.gameObject;
-        scoreText = scoreTextGameObject.GetComponent<TextMeshPro>();
-        if (player != null)
-        {
-            Debug.Log("Le GameObject Player a été récupéré avec succès!");
-        }
-        else
-        {
-            Debug.LogError("Impossible de trouver le GameObject Player.");
-        }
+        ResetScore();
     }
 
     public void IncreaseScore(int amount = 1)
@@ -47,9 +37,9 @@ public class Score : MonoBehaviour
 
     private void UpdateScoreUI()
     {
-        if (scoreText != null)
+        foreach (var scoreGui in scoreGuiList) 
         {
-            scoreText.text = currentScore.ToString();
+            scoreGui.ChangeScoreValue(currentScore.ToString());
         }
     }
 
@@ -58,8 +48,6 @@ public class Score : MonoBehaviour
     public int GetCurrentScore() { return currentScore; }
 
     public int GetMaxScore() { return maxScore; }
-
-    public TextMeshPro GetScoreText() { return scoreText; }
 
     public GameObject GetPlayer() { return player; }
 

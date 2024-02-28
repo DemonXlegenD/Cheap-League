@@ -45,4 +45,10 @@ public class ScoreController : MonoBehaviour
         m_ScoresDict[player].ResetScore();
     }
     #endregion
+
+    public void OnDestroy()
+    {
+        m_ScoresList.Clear();
+        m_ScoresDict.Clear();
+    }
 }

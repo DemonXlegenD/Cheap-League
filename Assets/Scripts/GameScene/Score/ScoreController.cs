@@ -8,6 +8,8 @@ public class ScoreController : MonoBehaviour
 
     public void Awake()
     {
+        foreach (var _score in m_ScoresList)
+            if (_score) m_ScoresDict.Add(_score.GetPlayer(), _score);
     }
 
     #region Getter

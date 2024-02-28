@@ -1,3 +1,4 @@
-FIX: Maurad
+ENH: Score
 
-- Maurad a tout cassé
+- Scores affichés
+- Quand un but est marqué, le score s'incrémente

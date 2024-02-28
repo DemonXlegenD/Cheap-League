@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -12,14 +13,28 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float rotationSpeed;
 
     private bool cameraLocked = false;
-    private List<string> pressedKeys;
+    private List<InputAction> pressedKeys;
 
-    [SerializeField, StringSelection("Camera 1", "Camera 2")] private string inputCameraName;
+    private Controls playerControls;
 
-
-    private bool GetAxisDown(string input)
+    private void Awake()
     {
-        if (Input.GetAxis(input) != 0)
+        playerControls = new Controls();
+    }
+
+    private void OnEnable()
+    {
+        playerControls.Gameplay.Camera.Enable();
+    }
+
+    private void OnDisable()
+    {
+        playerControls.Gameplay.Camera.Disable();
+    }
+
+    private bool GetPressedKey(InputAction input)
+    {
+        if (input.ReadValue<float>() != 0)
         {
             if (pressedKeys.FindIndex(key => key == input) != -1)
                 return false;
@@ -33,24 +48,25 @@ public class CameraFollow : MonoBehaviour
 
     private void Start()
     {
-        pressedKeys = new List<string>();
+        pressedKeys = new List<InputAction>();
     }
 
     private void FixedUpdate()
     {
-        HandleCamera();
+        //HandleCamera();
         HandleTranslation();
         HandleRotation();
     }
 
-    private void HandleCamera()
+    public void HandleCamera(InputAction.CallbackContext context)
     {
-        if (GetAxisDown(inputCameraName))
+        if (GetPressedKey(context.action))
         {
             if (cameraLocked == true)
             {
                 cameraLocked = false;
-            } else
+            }
+            else
             {
                 cameraLocked = true;
             }
@@ -62,8 +78,8 @@ public class CameraFollow : MonoBehaviour
         Vector3 targetPosition;
         if (cameraLocked)
         {
-            var targetDirection = target.position - ball.position;
-            targetPosition = target.position - (targetDirection.normalized * offset.z) + new Vector3(0, offset.y, 0);
+            var targetDirection = target.position - ball.position + new Vector3(0, offset.y, 0);
+            targetPosition = target.position - (targetDirection.normalized * offset.z);
         } else
         {
             targetPosition = target.TransformPoint(offset);

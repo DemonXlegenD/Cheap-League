@@ -44,5 +44,6 @@ public class MainHandler : MonoBehaviour
         player2.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
         Debug.Log("Scored !!!");
+
     }
 }

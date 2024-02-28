@@ -8,9 +8,8 @@ public class MainHandler : MonoBehaviour
 {
     public UnityEvent m_OnGoalScored;
 
-    [SerializeField] private TeamManager teamManager;
-    [SerializeField] private ScoreController scoreController;
-    [SerializeField] private GameObject ball;
+    public ScoreController scoreController;
+    public GameObject ball;
 
     // Start is called before the first frame update
     void Start()
@@ -35,11 +34,4 @@ public class MainHandler : MonoBehaviour
 
         Debug.Log("Scored !!!");
     }
-
-    #region Getter
-
-    public TeamManager GetTeamManager() { return teamManager; }
-    public ScoreController GetScoreController() { return scoreController; }
-    public GameObject GetBall() { return ball; }
-    #endregion
 }

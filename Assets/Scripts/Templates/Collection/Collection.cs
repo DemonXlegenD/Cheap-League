@@ -4,16 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-using UnityEngine.Events;
 
-
-[System.Serializable]
-public class Collection<T>
+public class Collection<T> : MonoBehaviour
 {
     /// <summary>
     /// Nom de la collection.
     /// </summary>
-    [Header("Collection Settings")]
+    /// [Header("Collection Settings")]
     [SerializeField]
     private string collectionName;
 
@@ -28,7 +25,7 @@ public class Collection<T>
     /// Dictionnaire associant des clés uniques à des éléments de la collection.
     /// </summary>
     [SerializeField]
-    private SerializableDictionary<string, T> dictionary = new SerializableDictionary<string, T>();
+    private Dictionary<string, T> dictionary = new Dictionary<string, T>();
 
     #region Events
 
@@ -117,35 +114,6 @@ public class Collection<T>
     #endregion
 
     #region Add
-
-    /// <summary>
-    /// Ajoute un élément à la collection.
-    /// </summary>
-    /// <param name="item">L'élément entré.</param>
-    /// /// <exception cref="ArgumentException">Levée si une clé avec le même nom existe déjà dans la collection.</exception>
-    public void AddToList(T item)
-    {
-        string key = item.ToString();
-        if (!HasItem(key))
-        {
-            list.Add(item);
-            dictionary.Add(key, item);
-            ItemAdded?.Invoke(item);
-        }
-        else
-        {
-            throw new ArgumentException("Une clé avec ce nom existe déjà dans la collection.");
-        }
-    }
-
-    public void AddItemToDictionary(T item)
-    {
-        string key = item.ToString();
-        if (!HasItem(key))
-        {
-            dictionary.Add(key, item);
-        }
-    }
 
     /// <summary>
     /// Ajoute un élément défaut à la collection.
@@ -275,7 +243,7 @@ public class Collection<T>
     /// Récupère un dictionnaire contenant toutes les clés et leurs éléments correspondants de la collection.
     /// </summary>
     /// <returns>Un dictionnaire contenant toutes les clés et leurs éléments correspondants de la collection.</returns>
-    public SerializableDictionary<string, T> GetItemsDictionary() { return dictionary; }
+    public Dictionary<string, T> GetItemsDictionary() { return dictionary; }
 
     /// <summary>
     /// Récupère le nombre d'éléments dans la collection.

@@ -10,12 +10,12 @@ public class Score : MonoBehaviour
 
     [SerializeField] private List<ScoreGUI> scoreGuiList = new List<ScoreGUI>();
 
-    [SerializeField] private GameObject player;
-
     public void Start()
     {
         ResetScore();
     }
+
+    public bool IsCurrentScoreMaxed() { return currentScore == maxScore; }
 
     public void IncreaseScore(int amount = 1)
     {
@@ -23,9 +23,13 @@ public class Score : MonoBehaviour
 
         UpdateScoreUI();
 
-        if (currentScore >= maxScore)
+        if (IsCurrentScoreMaxed())
         {
             Debug.Log("U WIN");
+        }
+        else
+        {
+            currentScore += amount;
         }
     }
 
@@ -48,8 +52,6 @@ public class Score : MonoBehaviour
     public int GetCurrentScore() { return currentScore; }
 
     public int GetMaxScore() { return maxScore; }
-
-    public GameObject GetPlayer() { return player; }
 
     #endregion
 }

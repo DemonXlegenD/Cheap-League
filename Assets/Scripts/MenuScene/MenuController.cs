@@ -18,6 +18,8 @@ public class MenuController : MonoBehaviour
     [SerializeField] private List<MenuPanel> panelList = new List<MenuPanel>();
     private Dictionary<PanelType, MenuPanel> panelDict = new Dictionary<PanelType, MenuPanel>();
 
+
+
     private GameManager gameManager;
 
     public void Start()
@@ -56,11 +58,5 @@ public class MenuController : MonoBehaviour
     public void Quit()
     {
         gameManager.Quit();
-    }
-
-    public void OnDestroy()
-    {
-        panelList.Clear();
-        panelDict.Clear();
     }
 }

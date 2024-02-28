@@ -10,12 +10,12 @@ public class LoadingBar : MonoBehaviour
     [Header("Player")]
     [SerializeField]  private GameObject player;
 
-    private FPSController fpsController;
+    private PlayerController fpsController;
 
     // Start is called before the first frame update
     void Start()
     {
-        fpsController = player.GetComponent<FPSController>();
+        fpsController = player.GetComponent<PlayerController>();
     }
 
     // Update is called once per frame

@@ -288,12 +288,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 117834135}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9759dadac62331b4e97b565c1d8cffc4, type: 3}
+  m_Script: {fileID: 11500000, guid: 503b55d148d658248ae4794dd03b5524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
-  state: 0
-  canvas: {fileID: 0}
 --- !u!114 &117834137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -601,11 +599,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 273312362}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72c85e858e8281042bf54ee2592dcf1a, type: 3}
+  m_Script: {fileID: 11500000, guid: 7063deb110729f345970657125783fd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
-  menuController: {fileID: 0}
 --- !u!1 &313227874
 GameObject:
   m_ObjectHideFlags: 0
@@ -691,7 +688,7 @@ GameObject:
   m_Component:
   - component: {fileID: 527806101}
   - component: {fileID: 527806100}
-  - component: {fileID: 527806099}
+  - component: {fileID: 527806103}
   - component: {fileID: 527806102}
   m_Layer: 5
   m_Name: MainPanel
@@ -700,21 +697,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &527806099
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 527806098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9759dadac62331b4e97b565c1d8cffc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 1
-  state: 0
-  canvas: {fileID: 0}
 --- !u!223 &527806100
 Canvas:
   m_ObjectHideFlags: 0
@@ -780,6 +762,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &527806103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527806098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 503b55d148d658248ae4794dd03b5524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
 --- !u!1 &684199506
 GameObject:
   m_ObjectHideFlags: 0
@@ -1006,11 +1001,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 733644172}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72c85e858e8281042bf54ee2592dcf1a, type: 3}
+  m_Script: {fileID: 11500000, guid: 7063deb110729f345970657125783fd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
-  menuController: {fileID: 0}
 --- !u!114 &733644176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1288,11 +1282,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 909678609}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72c85e858e8281042bf54ee2592dcf1a, type: 3}
+  m_Script: {fileID: 11500000, guid: 7063deb110729f345970657125783fd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  menuController: {fileID: 0}
 --- !u!114 &909678612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1413,7 +1406,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1048030611}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fb5ef3c34178ab4ab8ebe4cccf13f5a, type: 3}
+  m_Script: {fileID: 11500000, guid: 9848bd106175cde4aae61ca1c995be7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1048030613
@@ -1482,9 +1475,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9759dadac62331b4e97b565c1d8cffc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
-  state: 0
-  canvas: {fileID: 0}
 --- !u!223 &1116225339
 Canvas:
   m_ObjectHideFlags: 0
@@ -2243,7 +2233,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: GameScene
+          m_StringArgument: FieldScene
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1495583486
@@ -2652,13 +2642,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2065043778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebc5903c904633f46944196ab5c8e0c7, type: 3}
+  m_Script: {fileID: 11500000, guid: 6cc46ebdf76629f4089e056c4305bade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   panelList:
-  - {fileID: 527806099}
+  - {fileID: 527806103}
   - {fileID: 117834136}
-  gameManager: {fileID: 0}
 --- !u!114 &2065043780
 MonoBehaviour:
   m_ObjectHideFlags: 0

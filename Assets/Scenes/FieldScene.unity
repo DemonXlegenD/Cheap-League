@@ -727,6 +727,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3778980514482658641, guid: 0cab9ca0d4e97c14b88663e677f0818a,
+        type: 3}
+      propertyPath: scoreGuiList.Array.data[0]
+      value: 
+      objectReference: {fileID: 568828015}
+    - target: {fileID: 3778980514482658641, guid: 0cab9ca0d4e97c14b88663e677f0818a,
+        type: 3}
+      propertyPath: scoreGuiList.Array.data[1]
+      value: 
+      objectReference: {fileID: 618188154}
     - target: {fileID: 4193099758885586419, guid: 0cab9ca0d4e97c14b88663e677f0818a,
         type: 3}
       propertyPath: m_Layer
@@ -966,7 +976,7 @@ PrefabInstance:
     - target: {fileID: 332418994877025450, guid: 4c85b534d680f7947be06a3a2cf6e25d,
         type: 3}
       propertyPath: colorTeam
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2097194991103567768, guid: 4c85b534d680f7947be06a3a2cf6e25d,
         type: 3}
@@ -1520,6 +1530,18 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &457927261 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1797331127042903947, guid: 0cab9ca0d4e97c14b88663e677f0818a,
+    type: 3}
+  m_PrefabInstance: {fileID: 357572655}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec1c8f8f6af2d284cb790de516279f9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &487209194
 GameObject:
   m_ObjectHideFlags: 0
@@ -1628,6 +1650,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1806560748583002325}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &568828015 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8086000692211049392, guid: 0cab9ca0d4e97c14b88663e677f0818a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6578419768046504762}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec1c8f8f6af2d284cb790de516279f9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &583532360
 GameObject:
   m_ObjectHideFlags: 0
@@ -1733,6 +1767,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1262217333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &618188154 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8086000692211049392, guid: 0cab9ca0d4e97c14b88663e677f0818a,
+    type: 3}
+  m_PrefabInstance: {fileID: 357572655}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec1c8f8f6af2d284cb790de516279f9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!146 &618715055 stripped
 WheelCollider:
   m_CorrespondingSourceObject: {fileID: 4795950753765878369, guid: 133308cdb8794744caaef026bde9e1f0,
@@ -2247,7 +2293,7 @@ PrefabInstance:
     - target: {fileID: 332418994877025450, guid: 4c85b534d680f7947be06a3a2cf6e25d,
         type: 3}
       propertyPath: colorTeam
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2097194991103567768, guid: 4c85b534d680f7947be06a3a2cf6e25d,
         type: 3}
@@ -3372,8 +3418,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645298ae883a5644f930aa75ef29d34a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teamManager: {fileID: 0}
-  scoreController: {fileID: 0}
+  teamManager: {fileID: 1997655619}
+  scoreController: {fileID: 1997655621}
   m_OnGoalScored:
     m_PersistentCalls:
       m_Calls: []
@@ -4638,6 +4684,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1997655620}
   - component: {fileID: 1997655619}
+  - component: {fileID: 1997655621}
   m_Layer: 0
   m_Name: Teams
   m_TagString: Untagged
@@ -4686,6 +4733,21 @@ Transform:
   - {fileID: 2051037200}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1997655621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997655618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eb80386302b46d40a372fab36ae48d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ScoresList:
+  - {fileID: 2051037201}
+  - {fileID: 2030105101}
 --- !u!1 &2030105097 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1405974985531973744, guid: 0cab9ca0d4e97c14b88663e677f0818a,
@@ -4698,6 +4760,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6578419768046504762}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2030105101 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3778980514482658641, guid: 0cab9ca0d4e97c14b88663e677f0818a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6578419768046504762}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030105097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565bf74c765e270469636555276899ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!146 &2036726764 stripped
 WheelCollider:
   m_CorrespondingSourceObject: {fileID: 1057494946909100755, guid: 133308cdb8794744caaef026bde9e1f0,
@@ -4716,6 +4790,30 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 357572655}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2051037201 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3778980514482658641, guid: 0cab9ca0d4e97c14b88663e677f0818a,
+    type: 3}
+  m_PrefabInstance: {fileID: 357572655}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2051037197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565bf74c765e270469636555276899ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2079589306 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1797331127042903947, guid: 0cab9ca0d4e97c14b88663e677f0818a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6578419768046504762}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec1c8f8f6af2d284cb790de516279f9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2115381839 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6937996456860040397, guid: 867de196ab99b8f418863bca785b5cb3,
@@ -4884,6 +4982,16 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1844534041}
+    - target: {fileID: 3778980514482658641, guid: 0cab9ca0d4e97c14b88663e677f0818a,
+        type: 3}
+      propertyPath: scoreGuiList.Array.data[0]
+      value: 
+      objectReference: {fileID: 2079589306}
+    - target: {fileID: 3778980514482658641, guid: 0cab9ca0d4e97c14b88663e677f0818a,
+        type: 3}
+      propertyPath: scoreGuiList.Array.data[1]
+      value: 
+      objectReference: {fileID: 457927261}
     - target: {fileID: 6165712899777403556, guid: 0cab9ca0d4e97c14b88663e677f0818a,
         type: 3}
       propertyPath: m_LocalPosition.x

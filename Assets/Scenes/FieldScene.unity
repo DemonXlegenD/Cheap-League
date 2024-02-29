@@ -2040,8 +2040,8 @@ Transform:
   m_GameObject: {fileID: 729505209}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 6, y: 6, z: 6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1436859227}
@@ -3905,7 +3905,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1796174040}
   serializedVersion: 4
-  m_Mass: 1500
+  m_Mass: 150000
   m_Drag: 1
   m_AngularDrag: 1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -4268,7 +4268,7 @@ MonoBehaviour:
   target: {fileID: 1796174044}
   ball: {fileID: 729505214}
   offset: {x: 0, y: 3, z: -5}
-  translateSpeed: 50
+  translateSpeed: 20
   rotationSpeed: 50
   fov: 90
 --- !u!1001 &1926629449
@@ -4815,11 +4815,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: c4c2ee3e832cffd48bb9d156c2b21376, type: 2}
     - target: {fileID: 1057494946909100755, guid: 133308cdb8794744caaef026bde9e1f0,
         type: 3}
-      propertyPath: m_Mass
-      value: 1500
-      objectReference: {fileID: 0}
-    - target: {fileID: 1057494946909100755, guid: 133308cdb8794744caaef026bde9e1f0,
-        type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -4827,11 +4822,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2716459193614891142, guid: 133308cdb8794744caaef026bde9e1f0,
-        type: 3}
-      propertyPath: m_Mass
-      value: 1500
       objectReference: {fileID: 0}
     - target: {fileID: 2716459193614891142, guid: 133308cdb8794744caaef026bde9e1f0,
         type: 3}
@@ -4900,11 +4890,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3145262460232535540, guid: 133308cdb8794744caaef026bde9e1f0,
         type: 3}
-      propertyPath: m_Mass
-      value: 1500
-      objectReference: {fileID: 0}
-    - target: {fileID: 3145262460232535540, guid: 133308cdb8794744caaef026bde9e1f0,
-        type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -4917,11 +4902,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Free Racing Car Red Variant
-      objectReference: {fileID: 0}
-    - target: {fileID: 4795950753765878369, guid: 133308cdb8794744caaef026bde9e1f0,
-        type: 3}
-      propertyPath: m_Mass
-      value: 1500
       objectReference: {fileID: 0}
     - target: {fileID: 4795950753765878369, guid: 133308cdb8794744caaef026bde9e1f0,
         type: 3}

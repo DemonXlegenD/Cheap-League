@@ -195,14 +195,14 @@ public class CarController : MonoBehaviour
                 if (canFlick && timeInAir < flickDelay)
                 {
                     canFlick = false;
-                    if (verticalInput > flickDeadzone || verticalInput < flickDeadzone || horizontalInput > flickDeadzone || horizontalInput < flickDeadzone)
+                    if (verticalInput > flickDeadzone || verticalInput < -flickDeadzone || horizontalInput > flickDeadzone || horizontalInput < -flickDeadzone)
                     {
                         if (verticalInput > flickDeadzone)
                         {
                             Debug.Log("front flip");
                             rb.AddForce(Vector3.right * rb.mass);
                         }
-                        else if (verticalInput < flickDeadzone)
+                        else if (verticalInput < -flickDeadzone)
                         {
                             rb.AddForce(Vector3.left * rb.mass);
                         }
@@ -210,7 +210,7 @@ public class CarController : MonoBehaviour
                         {
                             rb.AddForce(Vector3.up * rb.mass);
                         }
-                        else if (horizontalInput < flickDeadzone)
+                        else if (horizontalInput < -flickDeadzone)
                         {
                             rb.AddForce(Vector3.down * rb.mass);
                         }

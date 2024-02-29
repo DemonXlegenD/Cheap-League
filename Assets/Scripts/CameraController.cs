@@ -81,7 +81,7 @@ public class CameraFollow : MonoBehaviour
         if (cameraLocked)
         {
             var targetDirection = target.position - ball.position + new Vector3(0, offset.y, 0);
-            targetPosition = target.position - (targetDirection.normalized * offset.z);
+            targetPosition = target.position + new Vector3(0, offset.y / 2, 0) - (targetDirection.normalized * offset.z);
         } else
         {
             targetPosition = target.TransformPoint(offset);

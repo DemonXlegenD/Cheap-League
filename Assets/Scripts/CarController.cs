@@ -11,6 +11,13 @@ public class CarController : MonoBehaviour
     private float steerAngle;
     private bool isBreaking;
     private float isBoosting;
+    private Rigidbody rb;
+    private float timeInAir = 0f;
+    private float flickDelay = 2f;
+    private bool canFlick = true;
+    private float rollLeft = 0f;
+    private float rollRight = 0f;
+    private float roll = 0f;
 
     [SerializeField, StringSelection("Jump 1", "Jump 2")] private string inputJumpName;
     [SerializeField, StringSelection("Camera 1", "Camera 2")] private string inputCameraName;
@@ -26,13 +33,14 @@ public class CarController : MonoBehaviour
     public Transform rearLeftWheelTransform;
     public Transform rearRightWheelTransform;
 
-    private Rigidbody rb;
-    public float maxSteeringAngle = 30f;
-    public float motorForce = 50f;
-    public float brakeForce = 0f;
-    public float jumpForce = 0f;
-    public float yawpitchRotationSpeed = 20f;
-    public float rollRotationSpeed = 20f;
+    [SerializeField] private float maxSteeringAngle = 30f;
+    [SerializeField] private float motorForce = 50f;
+    [SerializeField] private float brakeForce = 0f;
+    [SerializeField] private float jumpForce = 0f;
+    [SerializeField] private float yawpitchRotationSpeed = 20f;
+    [SerializeField] private float rollRotationSpeed = 20f;
+    [SerializeField] private float flickDeadzone = 0.2f;
+
 
     [SerializeField] private Controls playerControls;
 
@@ -80,7 +88,16 @@ public class CarController : MonoBehaviour
 
         if (!IsGrounded())
         {
+            timeInAir += Time.deltaTime;
             AerialCarControl();
+            if (timeInAir > flickDelay)
+            {
+                canFlick = false;
+            }
+        } else
+        {
+            timeInAir = 0;
+            canFlick = true;
         }
 
         if (isBoosting > 0)
@@ -89,7 +106,10 @@ public class CarController : MonoBehaviour
         }
 
         UpdateWheels();
-        rb.AddForce(transform.forward * motorForce * verticalInput);
+        if (IsGrounded())
+        {
+            rb.AddForce(transform.forward * motorForce * verticalInput);
+        }
     }
 
     bool IsGrounded()
@@ -106,32 +126,63 @@ public class CarController : MonoBehaviour
             isBreaking = Input.GetKey(KeyCode.Space);
         }*/
 
+    public void HandleRollLeft(InputAction.CallbackContext context)
+    {
+        rollLeft = context.action.ReadValue<float>();
+    }
+
+    public void HandleRollRight(InputAction.CallbackContext context)
+    {
+        rollRight = context.action.ReadValue<float>();
+    }
+
+    public void HandleRoll(InputAction.CallbackContext context)
+    {
+        roll = context.action.ReadValue<float>();
+    }
+
+
     public void HandleAerial(InputAction.CallbackContext context)
     {
         if (!IsGrounded()) {
             horizontalInput = context.action.ReadValue<Vector2>().x;
             verticalInput = context.action.ReadValue<Vector2>().y;
-            Debug.Log(context.action.ReadValue<Vector2>());
+            //Debug.Log(context.action.ReadValue<Vector2>());
         }
     }
 
     private void AerialCarControl()
     {
+        if (rollLeft > 0)
+        {
+            transform.Rotate(Vector3.back, rollRotationSpeed * 5 * rollLeft);
+        }
+
+        if (rollRight > 0)
+        {
+            transform.Rotate(Vector3.forward, rollRotationSpeed * 5 * rollRight);
+        }
+
+        if (roll > 0)
+        {
+            transform.Rotate(Vector3.back, rollRotationSpeed * 5 * horizontalInput);
+        }
+
         if (verticalInput > 0)
         {
-            this.transform.Rotate(Vector3.right, yawpitchRotationSpeed * rb.mass * Time.deltaTime);
+            transform.Rotate(Vector3.right, yawpitchRotationSpeed * 2 * verticalInput);
         }
         else if (verticalInput < 0)
         {
-            this.transform.Rotate(Vector3.left, yawpitchRotationSpeed * rb.mass * Time.deltaTime);
+            transform.Rotate(Vector3.left, yawpitchRotationSpeed * 2 * -verticalInput);
         }
-        else if (horizontalInput > 0)
+        else if (horizontalInput > 0 && roll == 0)
         {
-            this.transform.Rotate(Vector3.up, yawpitchRotationSpeed * rb.mass * Time.deltaTime);
+            transform.Rotate(Vector3.up, yawpitchRotationSpeed * 2 * horizontalInput);
         }
-        else if (horizontalInput < 0)
+        else if (horizontalInput < 0 && roll == 0)
         {
-            this.transform.Rotate(Vector3.down, yawpitchRotationSpeed * rb.mass * Time.deltaTime);
+            transform.Rotate(Vector3.down, yawpitchRotationSpeed * 2 * -horizontalInput);
         }
     }
 
@@ -139,7 +190,39 @@ public class CarController : MonoBehaviour
     {
         if (GetPressedKey(context.action))
         {
-            if (IsGrounded())
+            if (!IsGrounded())
+            {
+                if (canFlick && timeInAir < flickDelay)
+                {
+                    canFlick = false;
+                    if (verticalInput > flickDeadzone || verticalInput < flickDeadzone || horizontalInput > flickDeadzone || horizontalInput < flickDeadzone)
+                    {
+                        if (verticalInput > flickDeadzone)
+                        {
+                            Debug.Log("front flip");
+                            rb.AddForce(Vector3.right * rb.mass);
+                        }
+                        else if (verticalInput < flickDeadzone)
+                        {
+                            rb.AddForce(Vector3.left * rb.mass);
+                        }
+                        else if (horizontalInput > flickDeadzone)
+                        {
+                            rb.AddForce(Vector3.up * rb.mass);
+                        }
+                        else if (horizontalInput < flickDeadzone)
+                        {
+                            rb.AddForce(Vector3.down * rb.mass);
+                        }
+                        rb.velocity = new Vector3(rb.velocity.x, Physics.gravity.x, rb.velocity.z);
+                    }
+                    else
+                    {
+                        rb.AddForce(transform.up * rb.mass * jumpForce);
+                    }
+                }
+            }
+            else
             {
                 rb.AddForce(transform.up * rb.mass * jumpForce);
             }

@@ -6,11 +6,12 @@ using UnityEngine.InputSystem;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private Vector3 offset;
     [SerializeField] private Transform target;
     [SerializeField] private Transform ball;
+    [SerializeField] private Vector3 offset;
     [SerializeField] private float translateSpeed;
     [SerializeField] private float rotationSpeed;
+    [SerializeField, Range(60, 110)] private int fov;
 
     private bool cameraLocked = false;
     private List<InputAction> pressedKeys;
@@ -49,6 +50,7 @@ public class CameraFollow : MonoBehaviour
     private void Start()
     {
         pressedKeys = new List<InputAction>();
+        GetComponent<Camera>().fieldOfView = fov;
     }
 
     private void FixedUpdate()
@@ -84,6 +86,9 @@ public class CameraFollow : MonoBehaviour
         {
             targetPosition = target.TransformPoint(offset);
         }
+
+        //var finalPos = Physics.Raycast(transform.position, targetPosition.normalized, targetPosition.magnitude);
+
         transform.position = Vector3.Lerp(transform.position, targetPosition, translateSpeed * Time.deltaTime);
     }
     private void HandleRotation()
@@ -95,6 +100,7 @@ public class CameraFollow : MonoBehaviour
         }
 
         var rotation = Quaternion.LookRotation(direction, Vector3.up);
+
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
     }
 }

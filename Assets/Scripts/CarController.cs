@@ -39,7 +39,8 @@ public class CarController : MonoBehaviour
     [SerializeField] private float jumpForce = 0f;
     [SerializeField] private float yawpitchRotationSpeed = 20f;
     [SerializeField] private float rollRotationSpeed = 20f;
-    [SerializeField] private float flickDeadzone = 0.2f;
+    [SerializeField, Range(0, 1)] private float flickDeadzone = 0.2f;
+    [SerializeField, Range(0, 1)] private float aerialDeadzone = 0.2f;
 
 
     [SerializeField] private Controls playerControls;
@@ -147,42 +148,39 @@ public class CarController : MonoBehaviour
         if (!IsGrounded()) {
             horizontalInput = context.action.ReadValue<Vector2>().x;
             verticalInput = context.action.ReadValue<Vector2>().y;
-            //Debug.Log(context.action.ReadValue<Vector2>());
         }
     }
 
     private void AerialCarControl()
     {
+        Debug.Log(verticalInput);
+        Debug.Log(horizontalInput);
+
         if (rollLeft > 0)
         {
-            transform.Rotate(Vector3.back, rollRotationSpeed * 5 * rollLeft);
+            transform.Rotate(Vector3.back, rollRotationSpeed * 2 * rollLeft);
         }
 
         if (rollRight > 0)
         {
-            transform.Rotate(Vector3.forward, rollRotationSpeed * 5 * rollRight);
+            transform.Rotate(Vector3.forward, rollRotationSpeed * 2 * rollRight);
         }
 
         if (roll > 0)
         {
-            transform.Rotate(Vector3.back, rollRotationSpeed * 5 * horizontalInput);
+            transform.Rotate(Vector3.back, rollRotationSpeed * 4 * horizontalInput);
+        }
+        else
+        {
+            if (horizontalInput > aerialDeadzone || horizontalInput < -aerialDeadzone)
+            {
+                transform.Rotate(Vector3.up, yawpitchRotationSpeed * 2 * horizontalInput);
+            }
         }
 
-        if (verticalInput > 0)
+        if (verticalInput > aerialDeadzone || verticalInput < -aerialDeadzone)
         {
             transform.Rotate(Vector3.right, yawpitchRotationSpeed * 2 * verticalInput);
-        }
-        else if (verticalInput < 0)
-        {
-            transform.Rotate(Vector3.left, yawpitchRotationSpeed * 2 * -verticalInput);
-        }
-        else if (horizontalInput > 0 && roll == 0)
-        {
-            transform.Rotate(Vector3.up, yawpitchRotationSpeed * 2 * horizontalInput);
-        }
-        else if (horizontalInput < 0 && roll == 0)
-        {
-            transform.Rotate(Vector3.down, yawpitchRotationSpeed * 2 * -horizontalInput);
         }
     }
 

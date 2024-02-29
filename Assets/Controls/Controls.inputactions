@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "Move",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "273c73cd-080d-4275-9784-6abcf0912734",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -16,73 +16,73 @@
                 },
                 {
                     "name": "Jump",
-                    "type": "Button",
-                    "id": "0363ded8-fbaf-4a08-a48b-ec81e8fea23f",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Camera",
-                    "type": "Button",
-                    "id": "20556102-3613-457c-b94a-9dad23e8e29f",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Boost",
-                    "type": "Button",
-                    "id": "8fcc5272-62c7-463a-b12a-cc6bfe9691a0",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Aerial",
                     "type": "Value",
-                    "id": "2ebec8ad-a6d9-4658-9cd2-8bb10386aed5",
+                    "id": "0363ded8-fbaf-4a08-a48b-ec81e8fea23f",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
                 {
-                    "name": "RollLeft",
-                    "type": "Button",
-                    "id": "737d66d7-6dde-4ca1-a000-0b72f527c0b9",
-                    "expectedControlType": "Button",
+                    "name": "Camera",
+                    "type": "Value",
+                    "id": "20556102-3613-457c-b94a-9dad23e8e29f",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Boost",
+                    "type": "Value",
+                    "id": "8fcc5272-62c7-463a-b12a-cc6bfe9691a0",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Aerial",
+                    "type": "PassThrough",
+                    "id": "2ebec8ad-a6d9-4658-9cd2-8bb10386aed5",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "RollLeft",
+                    "type": "PassThrough",
+                    "id": "737d66d7-6dde-4ca1-a000-0b72f527c0b9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "RollRight",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "6e31a333-753a-4c21-aa15-f752bbc9db1f",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Roll",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "17320449-6810-4f9b-a08c-73e2ffe3e144",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
                 {
                     "name": "ControllerMove",
                     "id": "3a3da269-ea33-4e74-b42d-8d859b1e7ee4",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=1)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -256,72 +256,6 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "f6f51b6f-70ff-495e-883f-8c4aeec0e861",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Aerial",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "ControllerAerial",
-                    "id": "9af073b9-e51b-4927-b365-ba1459c3992a",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Aerial",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "67f0cd14-350c-43b2-b269-4c2ca8256389",
-                    "path": "<Gamepad>/leftStick/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Aerial",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "ad6d1972-8f9b-4599-8164-e9d1c461419a",
-                    "path": "<Gamepad>/leftStick/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Aerial",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "692e6e28-4d58-410f-a0d2-d06a6ef43d0a",
-                    "path": "<Gamepad>/leftStick/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Aerial",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "acf391e0-de5c-49a2-ac42-cf2b5fee02af",
-                    "path": "<Gamepad>/leftStick/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Aerial",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "KeyboardAerial",
                     "id": "3b1c2812-d8ed-4f7d-b4bb-6632216dff94",
                     "path": "2DVector",
@@ -375,6 +309,17 @@
                     "action": "Aerial",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "ff4fa7af-eb8c-4a06-99d5-8c902e60219a",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Aerial",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",

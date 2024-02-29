@@ -6,17 +6,17 @@ using UnityEngine;
 public class ScoreGUI : MonoBehaviour
 {
 
-    private ScoreController scoreController;
-
-    private TextMeshPro scoreText;
+    private TextMeshProUGUI scoreText;
     // Start is called before the first frame update
-    void Start()
+    public void Awake()
     {
-        scoreController = FindObjectOfType<ScoreController>();
-        scoreText = GetComponentInChildren<TextMeshPro>();
-
+        scoreText = GetComponentInChildren<TextMeshProUGUI>();
     }
 
+    private void Update()
+    {
+
+    }
     public void ChangeScoreValue(string scoreValue)
     {
         scoreText.text = scoreValue;

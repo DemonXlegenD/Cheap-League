@@ -1,3 +1,3 @@
-FIX: Restaure Master
+NEW: SettingsMenu
 
-- Restauration de la master
+- Création de l'UI pour le menu des paramètres

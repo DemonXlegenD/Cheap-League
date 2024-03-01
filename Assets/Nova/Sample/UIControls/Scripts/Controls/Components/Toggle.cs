@@ -9,12 +9,35 @@ namespace NovaSamples.UIControls
     /// </summary>
     public class Toggle : UIControl<ToggleVisuals>
     {
+        [SerializeField]
+        [Tooltip("The string value associated with the slider.")]
+        private string label;
+
         [Tooltip("Event invoked when the toggle state changes. Provides the ToggledOn state.")]
         public UnityEvent<bool> OnToggled = null;
 
         [Tooltip("The toggle state of this toggle control")]
         [SerializeField]
         private bool toggledOn = false;
+
+        /// <summary>
+        /// The visuals associated with this dropdown control
+        /// </summary>
+        private ToggleVisuals Visuals => View.Visuals as ToggleVisuals;
+
+        public string Label
+        {
+            get { return label; }
+            set { label = value; }
+        }
+
+        public void Start()
+        {
+            if (Visuals != null)
+            {
+                Visuals.Label.Text = label;
+            }
+        }
 
         /// <summary>
         /// The state of this toggle control

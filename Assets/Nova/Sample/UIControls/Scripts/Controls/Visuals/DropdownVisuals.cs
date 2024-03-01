@@ -13,6 +13,8 @@ namespace NovaSamples.UIControls
     public class DropdownVisuals : UIControlVisuals
     {
         [Header("Collapsed Visuals")]
+        [Tooltip("The TextBlock to display the label of the dropdown.")]
+        public TextBlock Label = null;
         [Tooltip("The TextBlock to display the label of currently selected option.")]
         public TextBlock SelectionLabel = null;
         [Tooltip("The background visual element to change as the dropdown is pressed and released.")]
@@ -162,6 +164,14 @@ namespace NovaSamples.UIControls
         public void InitSelectionLabel(string label)
         {
             SelectionLabel.Text = label;
+        }
+
+        /// <summary>
+        /// Sets the label to the provided value
+        /// </summary>
+        public void InitLabel(string label)
+        {
+            Label.Text = label;
         }
 
         /// <summary>

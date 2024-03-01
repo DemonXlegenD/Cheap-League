@@ -9,6 +9,10 @@ namespace NovaSamples.UIControls
     /// </summary>
     public class Dropdown : UIControl<DropdownVisuals>
     {
+        [SerializeField]
+        [Tooltip("The label of the dropdown.")]
+        private string label;
+
         [Tooltip("The event fired when a new item is selected from the dropdown list.")]
         public UnityEvent<string> OnValueChanged = null;
 
@@ -21,6 +25,18 @@ namespace NovaSamples.UIControls
         /// </summary>
         private DropdownVisuals Visuals => View.Visuals as DropdownVisuals;
 
+        public string Label
+        {
+            get { return label; }
+            set { label = value; }
+        }
+
+        public void Start()
+        {
+            if (Visuals != null) {
+                Visuals.Label.Text = label;
+            }
+        }
         public void Expand()
         {
             // Tell the dropdown to expand, showing a list of

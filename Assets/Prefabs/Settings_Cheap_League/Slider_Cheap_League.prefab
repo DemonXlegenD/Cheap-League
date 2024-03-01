@@ -328,7 +328,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 663, y: 0}
+  m_AnchoredPosition: {x: 350, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &5645173074191074005
@@ -412,7 +412,7 @@ MonoBehaviour:
         Type: 0
     Position:
       X:
-        Raw: 820
+        Raw: 700
         Type: 0
       Y:
         Raw: -0
@@ -647,7 +647,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -48, y: -5, z: -48, w: -5}
+  m_margin: {x: -48, y: -20, z: -48, w: -20}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   _SortingLayer: 0
@@ -684,7 +684,7 @@ Transform:
   m_GameObject: {fileID: 5008573090000099400}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 144, y: 0, z: 0}
+  m_LocalPosition: {x: 145, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -729,7 +729,7 @@ MonoBehaviour:
         Type: 0
     Position:
       X:
-        Raw: -35
+        Raw: -30
         Type: 0
       Y:
         Raw: 0
@@ -1025,7 +1025,7 @@ Transform:
   m_GameObject: {fileID: 6918960263309591247}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -144, y: 0, z: 0}
+  m_LocalPosition: {x: -150, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1319,7 +1319,7 @@ Transform:
   m_GameObject: {fileID: 8252201172387943929}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 295, y: 0, z: 0}
+  m_LocalPosition: {x: -98, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1376,10 +1376,10 @@ MonoBehaviour:
         Type: 0
     Padding:
       Left:
-        Raw: 12
+        Raw: 0
         Type: 0
       Right:
-        Raw: 12
+        Raw: 0
         Type: 0
       Bottom:
         Raw: 0
@@ -1662,7 +1662,7 @@ Transform:
   m_GameObject: {fileID: 8339180747068976958}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 107.725006, y: 0, z: 0}
+  m_LocalPosition: {x: 448, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1699,18 +1699,18 @@ MonoBehaviour:
   layout:
     Size:
       X:
-        Raw: 10
+        Raw: 796
         Type: 0
       Y:
-        Raw: 10
+        Raw: 40
         Type: 0
       Z:
         Raw: 0
         Type: 0
     Position:
       X:
-        Raw: 215.45001
-        Type: 0
+        Raw: 0.5
+        Type: 1
       Y:
         Raw: 0
         Type: 0
@@ -1738,7 +1738,7 @@ MonoBehaviour:
         Type: 0
     Margin:
       Left:
-        Raw: 0
+        Raw: 50
         Type: 0
       Right:
         Raw: 0
@@ -1818,8 +1818,8 @@ MonoBehaviour:
       Y: 0
       Z: 0
     AutoSize:
-      X: 0
-      Y: 0
+      X: 2
+      Y: 2
       Z: 0
     RotateSize: 0
     AspectRatio: {x: 0, y: 0, z: 0}
@@ -1827,7 +1827,7 @@ MonoBehaviour:
   autoLayout:
     Axis: 1
     Spacing:
-      Raw: 20
+      Raw: 100
       Type: 0
     SpacingMinMax:
       Min: 0
@@ -1896,7 +1896,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -30, y: 0}
+  m_AnchoredPosition: {x: -82.725006, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &7615661083801842050
@@ -1980,8 +1980,8 @@ MonoBehaviour:
         Type: 0
     Position:
       X:
-        Raw: 0
-        Type: 0
+        Raw: 0.5
+        Type: 1
       Y:
         Raw: 0
         Type: 0
@@ -2085,7 +2085,7 @@ MonoBehaviour:
         Min: -Infinity
         Max: Infinity
     Alignment:
-      X: -1
+      X: 1
       Y: 0
       Z: 0
     AutoSize:
@@ -2253,7 +2253,7 @@ Transform:
   m_GameObject: {fileID: 8392981366765138668}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 62.725006, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.000005722046, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2300,10 +2300,10 @@ MonoBehaviour:
         Type: 0
     Position:
       X:
-        Raw: -50
+        Raw: 0
         Type: 0
       Y:
-        Raw: 0
+        Raw: 0.000005722046
         Type: 0
       Z:
         Raw: 0
@@ -2405,7 +2405,7 @@ MonoBehaviour:
         Min: -Infinity
         Max: Infinity
     Alignment:
-      X: -1
+      X: 0
       Y: 0
       Z: 0
     AutoSize:
@@ -2416,7 +2416,7 @@ MonoBehaviour:
     AspectRatio: {x: 0, y: 0, z: 0}
     AspectRatioAxis: 0
   autoLayout:
-    Axis: 1
+    Axis: 0
     Spacing:
       Raw: 50
       Type: 0
@@ -2425,7 +2425,7 @@ MonoBehaviour:
       Max: Infinity
     AutoSpace: 0
     ReverseOrder: 0
-    alignment: -1
+    alignment: 0
     Offset: 0
     Cross:
       Axis: 0
@@ -2542,9 +2542,9 @@ MonoBehaviour:
       data:
         TransitionType: 1
         transitionTarget: {fileID: 2843839843033083550}
-        DefaultColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-        HoveredColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-        PressedColor: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+        DefaultColor: {r: 1, g: 1, b: 1, a: 1}
+        HoveredColor: {r: 0.06786222, g: 0.4163703, b: 0.5754717, a: 1}
+        PressedColor: {r: 0.14901961, g: 0.32941177, b: 0.4117647, a: 1}
         TransitionDuration: 0.1
         Sprites:
           DefaultSprite: {fileID: 0}
@@ -2571,13 +2571,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f04df918b3d021e46980a86b205f5a8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  label: VOLUME
   OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
   UpdateOnPress: 1
-  name: SLIDER
   value: 0
   DPadPercentAdjustment: 0.1
   Min: 0
   Max: 100
-  unitsFormat: '{0:0.00}'
+  unitsFormat: '{0:0.00}%'

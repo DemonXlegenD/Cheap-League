@@ -9,15 +9,16 @@ namespace NovaSamples.UIControls
     /// </summary>
     public class Slider : UIControl<SliderVisuals>
     {
+        [SerializeField]
+        [Tooltip("The string value associated with the slider.")]
+        private string label;
+
         [Tooltip("Event fired when the slider value changes. Provides the new value.")]
         public UnityEvent<float> OnValueChanged = null;
 
         [Tooltip("If true, pressing anywhere in the draggable region will update the slider value (common on Desktop).\nIf false, the user must drag within the draggable region for the slider to update (common on Mobile).")]
         public bool UpdateOnPress = true;
 
-        [SerializeField]
-        [Tooltip("The string value associated with the slider.")]
-        private string name;
 
         [SerializeField]
         [Tooltip("The numeric value associated with the slider.")]
@@ -56,12 +57,6 @@ namespace NovaSamples.UIControls
             }
         }
 
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
         [SerializeField]
         [Tooltip("The mininum value for the given slider.")]
         private float Min = 0;
@@ -73,6 +68,24 @@ namespace NovaSamples.UIControls
         [Tooltip("The string format to use when displaying the slider value to the end user.")]
         private string unitsFormat = "{0:0.00}";
 
+        /// <summary>
+        /// The visuals associated with this dropdown control
+        /// </summary>
+        private SliderVisuals Visuals => View.Visuals as SliderVisuals;
+
+        public string Label
+        {
+            get { return label; }
+            set { label = value; }
+        }
+
+        public void Start()
+        {
+            if (Visuals != null)
+            {
+                Visuals.Label.Text = label;
+            }
+        }
         private void OnEnable()
         {
             if (View.TryGetVisuals(out SliderVisuals visuals))

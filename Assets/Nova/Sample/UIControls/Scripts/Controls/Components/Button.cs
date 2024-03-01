@@ -9,9 +9,24 @@ namespace NovaSamples.UIControls
     /// </summary>
     public class Button : UIControl<ButtonVisuals>
     {
+        [Tooltip("Label of the Button.")]
+        [SerializeField] private string label;
+
         [Tooltip("Event fired when the button is clicked.")]
         public UnityEvent OnClicked = null;
 
+        public string Label
+        {
+            get { return label; }
+            set { label = value; }
+        }
+
+        public ButtonVisuals Visuals => View.Visuals as ButtonVisuals;
+
+        private void Start()
+        {
+            Visuals.Label.Text = label;
+        }
         private void OnEnable()
         {
             if (View.TryGetVisuals(out ButtonVisuals visuals))

@@ -1,3 +1,5 @@
-NEW: SettingsMenu
+ENH: Fin apprentissage Nova
 
-- Création de l'UI pour le menu des paramètres
+- UI terminé
+- Reprise du template et des exemples de la Librairie
+- Introduction au ScrollBar

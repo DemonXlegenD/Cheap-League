@@ -669,7 +669,7 @@ GameObject:
   - component: {fileID: 2464270313545840169}
   - component: {fileID: 7001414686792611882}
   m_Layer: 0
-  m_Name: SettingsToggle_SciFi
+  m_Name: SettingsToggle_Cheap_League
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

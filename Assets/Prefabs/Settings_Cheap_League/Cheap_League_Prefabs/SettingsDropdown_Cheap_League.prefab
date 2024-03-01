@@ -2475,7 +2475,7 @@ GameObject:
   - component: {fileID: 7623978411554998604}
   - component: {fileID: 584603920532533036}
   m_Layer: 0
-  m_Name: SettingsDropdown_SciFi
+  m_Name: SettingsDropdown_Cheap_League
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

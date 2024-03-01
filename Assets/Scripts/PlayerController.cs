@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float gravity = 10f;
     [SerializeField] private float lookSpeed = 2f;
     [SerializeField] private float lookXLimit = 45f;
+    [SerializeField] private GameObject ball;
 
     private Rigidbody rb;
     private float moveForce = 1.0f;
@@ -70,6 +71,11 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         rb = GetComponent<Rigidbody>();
+
+        Physics.IgnoreCollision(ball.GetComponent<Collider>(), GetComponent<Collider>());
+        Physics.IgnoreCollision(ball.GetComponent<Collider>(), GetComponent<Collider>());
+        Physics.IgnoreCollision(ball.GetComponent<Collider>(), GetComponent<Collider>());
+        Physics.IgnoreCollision(ball.GetComponent<Collider>(), GetComponent<Collider>());
     }
 
     void Update()

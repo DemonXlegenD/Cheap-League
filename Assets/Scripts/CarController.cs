@@ -11,6 +11,7 @@ public class CarController : MonoBehaviour
     private float steerAngle;
     private bool isBreaking;
     private float isBoosting;
+    private bool isFlicking;
     private Rigidbody rb;
     private float timeInAir = 0f;
     private float flickDelay = 2f;
@@ -19,11 +20,15 @@ public class CarController : MonoBehaviour
     private float rollRight = 0f;
     private float roll = 0f;
 
+
     [SerializeField, StringSelection("Jump 1", "Jump 2")] private string inputJumpName;
     [SerializeField, StringSelection("Camera 1", "Camera 2")] private string inputCameraName;
 
     private List<InputAction> pressedKeys;
 
+    [SerializeField] private GameObject ball;
+
+    public Collider CarCollider;
     public WheelCollider frontLeftWheelCollider;
     public WheelCollider frontRightWheelCollider;
     public WheelCollider rearLeftWheelCollider;
@@ -33,10 +38,23 @@ public class CarController : MonoBehaviour
     public Transform rearLeftWheelTransform;
     public Transform rearRightWheelTransform;
 
+    private Vector3 fLWOffset;
+    private Vector3 fRWOffset;
+    private Vector3 rLWOffset;
+    private Vector3 rRWOffset;
+    private Quaternion fLWRotation;
+    private Quaternion fRWRotation;
+    private Quaternion rLWRotation;
+    private Quaternion rRWRotation;
+
+    private Vector3 dirr = Vector3.zero;
+    private Vector3 dirr2 = Vector3.zero;
+
     [SerializeField] private float maxSteeringAngle = 30f;
     [SerializeField] private float motorForce = 50f;
     [SerializeField] private float brakeForce = 0f;
-    [SerializeField] private float jumpForce = 0f;
+    [SerializeField] private float jumpForce = 100f;
+    [SerializeField] private float boostForce = 30f;
     [SerializeField] private float yawpitchRotationSpeed = 20f;
     [SerializeField] private float rollRotationSpeed = 20f;
     [SerializeField, Range(0, 1)] private float flickDeadzone = 0.2f;
@@ -47,23 +65,27 @@ public class CarController : MonoBehaviour
 
     private void Awake()
     {
-        playerControls = new Controls();
+        fLWRotation = frontLeftWheelTransform.rotation;
+        fRWRotation = frontRightWheelTransform.rotation;
+        rLWRotation = rearLeftWheelTransform.rotation;
+        rRWRotation = rearRightWheelTransform.rotation;
+
+        fLWOffset = frontLeftWheelTransform.position;
+        fRWOffset = frontRightWheelTransform.position;
+        rLWOffset = rearLeftWheelTransform.position;
+        rRWOffset = rearRightWheelTransform.position;
     }
     void Start()
     {
+        CarCollider.contactOffset = 0.1f;
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass += new Vector3(0, -1f, 0);
         pressedKeys = new List<InputAction>();
-    }
 
-    private void OnEnable()
-    {
-        playerControls.Gameplay.Move.Enable();
-    }
-
-    private void OnDisable()
-    {
-        playerControls.Gameplay.Move.Disable();
+        Physics.IgnoreCollision(ball.GetComponent<Collider>(), frontLeftWheelCollider.GetComponent<Collider>());
+        Physics.IgnoreCollision(ball.GetComponent<Collider>(), frontRightWheelCollider.GetComponent<Collider>());
+        Physics.IgnoreCollision(ball.GetComponent<Collider>(), rearLeftWheelCollider.GetComponent<Collider>());
+        Physics.IgnoreCollision(ball.GetComponent<Collider>(), rearRightWheelCollider.GetComponent<Collider>());
     }
 
     private bool GetPressedKey(InputAction input)
@@ -82,10 +104,8 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //GetInput();
-        //HandleJump();
-        //HandleMotor();
-        //HandleSteering();
+        Debug.DrawRay(rb.position, dirr * 50, Color.cyan);
+        Debug.DrawRay(rb.position, dirr2 * 50, Color.red);
 
         if (!IsGrounded())
         {
@@ -95,16 +115,19 @@ public class CarController : MonoBehaviour
             {
                 canFlick = false;
             }
+            rb.AddForce(Vector3.up * Physics.gravity.y * rb.mass);
         } else
         {
             timeInAir = 0;
             canFlick = true;
+            rb.AddForce(transform.up * Physics.gravity.y * rb.mass * 2);
         }
 
         if (isBoosting > 0)
         {
-            rb.AddForce(transform.forward * rb.mass * 50 * isBoosting);
+            rb.AddForce(transform.forward * rb.mass * boostForce * isBoosting);
         }
+
 
         UpdateWheels();
         if (IsGrounded())
@@ -115,7 +138,7 @@ public class CarController : MonoBehaviour
 
     bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, 1.5f);
+        return Physics.Raycast(transform.position, -transform.up, 1.5f);
     }
 
     /*    public void GetInput()
@@ -151,10 +174,27 @@ public class CarController : MonoBehaviour
         }
     }
 
-    private void AerialCarControl()
+    private IEnumerator Flick(Vector3 flickPosition, Vector3 flickDirection)
     {
-        Debug.Log(verticalInput);
-        Debug.Log(horizontalInput);
+        isFlicking = true;
+        rb.constraints = RigidbodyConstraints.FreezePositionY;
+        rb.angularDrag = 0.05f;
+
+        //flickPosition = new Vector3(flickPosition.x, 0, flickDirection.z);
+        //flickDirection = new Vector3(flickDirection.x, 0, flickDirection.z);
+
+        rb.AddForce(flickPosition * rb.mass * 40, ForceMode.Impulse);
+        rb.AddTorque(flickDirection * rb.mass * 15, ForceMode.Impulse);
+
+        yield return new WaitForSeconds(0.5f);
+
+        rb.constraints = RigidbodyConstraints.None;
+        rb.angularDrag = 5f;
+        isFlicking = false;
+    }
+
+    private void OldAerialCarControl()
+    {
 
         if (rollLeft > 0)
         {
@@ -174,13 +214,55 @@ public class CarController : MonoBehaviour
         {
             if (horizontalInput > aerialDeadzone || horizontalInput < -aerialDeadzone)
             {
-                transform.Rotate(Vector3.up, yawpitchRotationSpeed * 2 * horizontalInput);
+                transform.Rotate(Vector3.up, yawpitchRotationSpeed * 3 * horizontalInput);
             }
         }
 
         if (verticalInput > aerialDeadzone || verticalInput < -aerialDeadzone)
         {
-            transform.Rotate(Vector3.right, yawpitchRotationSpeed * 2 * verticalInput);
+            transform.Rotate(Vector3.right, yawpitchRotationSpeed * 3 * verticalInput);
+        }
+    }
+
+    private void AerialCarControl()
+    {
+        if (!isFlicking)
+        {
+            if (rollLeft > 0)
+            {
+                rb.AddRelativeTorque(Vector3.back * rollRotationSpeed * rb.mass * rollLeft * 20);
+                //transform.Rotate(Vector3.back, rollRotationSpeed * 2 * rollLeft);
+            }
+
+            if (rollRight > 0)
+            {
+                rb.AddRelativeTorque(Vector3.forward * rollRotationSpeed * rb.mass * rollRight * 20);
+
+                //transform.Rotate(Vector3.forward, rollRotationSpeed * 2 * rollRight);
+            }
+
+            if (roll > 0)
+            {
+                rb.AddRelativeTorque(Vector3.back * rollRotationSpeed * rb.mass * horizontalInput * 20);
+
+                //transform.Rotate(Vector3.back, rollRotationSpeed * 4 * horizontalInput);
+            }
+            else
+            {
+                if (horizontalInput > aerialDeadzone || horizontalInput < -aerialDeadzone)
+                {
+                    rb.AddRelativeTorque(Vector3.up * rollRotationSpeed * rb.mass * horizontalInput * 20);
+
+                    //transform.Rotate(Vector3.up, yawpitchRotationSpeed * 2 * horizontalInput);
+                }
+            }
+        }
+
+        if (verticalInput > aerialDeadzone || verticalInput < -aerialDeadzone)
+        {
+            rb.AddRelativeTorque(Vector3.right * rollRotationSpeed * rb.mass * verticalInput * 20);
+
+            //transform.Rotate(Vector3.right, yawpitchRotationSpeed * 2 * verticalInput);
         }
     }
 
@@ -195,24 +277,37 @@ public class CarController : MonoBehaviour
                     canFlick = false;
                     if (verticalInput > flickDeadzone || verticalInput < -flickDeadzone || horizontalInput > flickDeadzone || horizontalInput < -flickDeadzone)
                     {
+                        Vector3 flickPosition = Vector3.zero;
+                        Vector3 flickDirection = Vector3.zero;
                         if (verticalInput > flickDeadzone)
                         {
                             Debug.Log("front flip");
-                            rb.AddForce(Vector3.right * rb.mass);
+                            flickPosition += transform.forward * verticalInput;
+                            flickDirection += transform.right;
                         }
-                        else if (verticalInput < -flickDeadzone)
+                        if (verticalInput < -flickDeadzone)
                         {
-                            rb.AddForce(Vector3.left * rb.mass);
+                            flickPosition += transform.forward * verticalInput;
+                            flickDirection -= transform.right;
                         }
-                        else if (horizontalInput > flickDeadzone)
+                        if (horizontalInput > flickDeadzone)
                         {
-                            rb.AddForce(Vector3.up * rb.mass);
+                            flickPosition += transform.right * horizontalInput;
+                            flickDirection -= transform.forward;
                         }
-                        else if (horizontalInput < -flickDeadzone)
+                        if (horizontalInput < -flickDeadzone)
                         {
-                            rb.AddForce(Vector3.down * rb.mass);
+                            flickPosition += transform.right * horizontalInput;
+                            flickDirection += transform.forward;
                         }
-                        rb.velocity = new Vector3(rb.velocity.x, Physics.gravity.x, rb.velocity.z);
+
+                        StartCoroutine(Flick(flickPosition.normalized, flickDirection.normalized));
+
+                        dirr = flickDirection;
+                        dirr2 = flickPosition;
+
+
+                        //rb.velocity = new Vector3(rb.velocity.x, Physics.gravity.x, rb.velocity.z);
                     }
                     else
                     {
@@ -261,19 +356,19 @@ public class CarController : MonoBehaviour
 
     private void UpdateWheels()
     {
-        UpdateWheelPos(frontLeftWheelCollider, frontLeftWheelTransform);
-        UpdateWheelPos(frontRightWheelCollider, frontRightWheelTransform);
-        UpdateWheelPos(rearLeftWheelCollider, rearLeftWheelTransform);
-        UpdateWheelPos(rearRightWheelCollider, rearRightWheelTransform);
+        UpdateWheelPos(frontLeftWheelCollider, frontLeftWheelTransform, fLWRotation, fLWOffset);
+        UpdateWheelPos(frontRightWheelCollider, frontRightWheelTransform, fRWRotation, fRWOffset);
+        UpdateWheelPos(rearLeftWheelCollider, rearLeftWheelTransform, rLWRotation, rLWOffset);
+        UpdateWheelPos(rearRightWheelCollider, rearRightWheelTransform, rRWRotation, rRWOffset);
     }
 
-    private void UpdateWheelPos(WheelCollider wheelCollider, Transform trans)
+    private void UpdateWheelPos(WheelCollider wheelCollider, Transform trans, Quaternion rotate, Vector3 offset)
     {
         Vector3 pos;
         Quaternion rot;
         wheelCollider.GetWorldPose(out pos, out rot);
-        trans.rotation = rot;
-        trans.position = pos;
+        trans.rotation = rot * rotate;
+        trans.position = pos;// + offset;
     }
 
 }

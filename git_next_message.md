@@ -1,5 +1,3 @@
-ENH: Fin apprentissage Nova
+NEW: Timer
 
-- UI terminé
-- Reprise du template et des exemples de la Librairie
-- Introduction au ScrollBar
+- Création d'un timer

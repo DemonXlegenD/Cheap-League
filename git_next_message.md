@@ -1,3 +1,3 @@
-NEW: Génération map
+ENH: Amelioration
 
-- Création d'un bruit de perlin pour la génération d'une map procédurale
+- Amélioration du bruit de perlin

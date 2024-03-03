@@ -18,13 +18,15 @@ public static class Noise
                 float amplitude = 1;
                 float frequency = 1;
                 float noiseHeight = 0;
+
                 for (int i = 0; i < octaves; i++)
                 {
-                    float sampleX = x / scale;
-                    float sampleY = y / scale;
+                    float sampleX = x / scale * frequency;
+                    float sampleY = y / scale * frequency;
 
                     float perlinValue = Mathf.PerlinNoise(sampleX, sampleY);
-                    noiseMap[x, y] = perlinValue;
+                    noiseHeight += perlinValue * amplitude;
+                    amplitude *= persistance;
                 }
 
             }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,11 +9,11 @@ public class MapGeneratorEditor : Editor
         MapGenerator mapGenerator = (MapGenerator)target;
         if (DrawDefaultInspector())
         {
-            if(mapGenerator.autoUpdate)
+            if (mapGenerator.autoUpdate)
             {
-mapGenerator.GenerateMap();
+                mapGenerator.GenerateMap();
             }
-            
+
         }
 
         if (GUILayout.Button("Generate"))

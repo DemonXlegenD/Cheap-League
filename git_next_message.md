@@ -1,5 +1,3 @@
-ENH: Fin apprentissage Nova
+NEW: Génération map
 
-- UI terminé
-- Reprise du template et des exemples de la Librairie
-- Introduction au ScrollBar
+- Création d'un bruit de perlin pour la génération d'une map procédurale

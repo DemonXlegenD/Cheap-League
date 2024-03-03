@@ -6,6 +6,9 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class Timer : MonoBehaviour
 {
+    GameManager gameManager;
+    [SerializeField] private List<TimerGUI> timerGuiList = new List<TimerGUI>();
+
     [SerializeField] private UnityEvent OnStartTimer;
     [SerializeField] private UnityEvent OnPauseTimer;
     [SerializeField] private UnityEvent OnEndTimer;
@@ -13,6 +16,7 @@ public class Timer : MonoBehaviour
     //Each timer is in seconds
     [SerializeField] private float MaxTimer = 90;
     [SerializeField] private float CurrentTimer;
+    [SerializeField] private string formatTimer;
 
     private bool IsStarted = false;
     private bool IsPaused = false;
@@ -21,7 +25,9 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameManager.GetInstance();
         ResetTimer();
+        StartTimer();
     }
 
     // Update is called once per frame
@@ -29,16 +35,39 @@ public class Timer : MonoBehaviour
     {
         if (IsStarted && !IsPaused)
         {
-            CurrentTimer -= Time.deltaTime;   
+            CurrentTimer -= Time.deltaTime;
+            if (CurrentTimer <= 0 )
+            {
+                EndTimer();
+            }
+            UpdateTimerUI();
         }
-
-        if (CurrentTimer <= 0)
-        {
-            IsEnded = true;
-            IsStarted = false;
-            IsPaused = false;
-        }
+     
     }
+
+    public void StartTimer()
+    {
+        IsStarted = true;
+        IsPaused = false;
+        OnStartTimer?.Invoke();
+    }
+
+    public void PauseTimer()
+    {
+        IsPaused = true;
+        OnPauseTimer?.Invoke();
+    }
+
+    public void EndTimer()
+    {
+        IsStarted = false;
+        IsPaused = false;
+        IsEnded = true;
+        CurrentTimer = 0;
+        OnEndTimer?.Invoke();
+        gameManager.ChangeScene("Menu Scene");
+    }
+
 
     public void ResetTimer()
     {
@@ -46,6 +75,14 @@ public class Timer : MonoBehaviour
         IsPaused = false;
         IsEnded = false;
         CurrentTimer = MaxTimer;
+    }
+
+    private void UpdateTimerUI()
+    {
+        foreach (var timerGUI in timerGuiList)
+        {
+            timerGUI.ChangeScoreValue(GetFormattedTime());
+        }
     }
 
 
@@ -57,6 +94,13 @@ public class Timer : MonoBehaviour
     public bool GetIsStarted() { return IsStarted; }
     public bool GetIsPaused() { return IsPaused; }
     public bool GetIsEnded() { return IsEnded; }
+    public string GetFormattedTime()
+    {
+        int minutes = Mathf.FloorToInt(CurrentTimer / 60);
+        int seconds = Mathf.FloorToInt(CurrentTimer % 60);
+        return string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
 
     #endregion
 

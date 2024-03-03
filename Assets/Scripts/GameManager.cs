@@ -1,33 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance
+    public static GameManager instance = null;
+
+    public static GameManager GetInstance()
     {
-        private set { Instance = value; }
-        get
+        if (instance == null)
         {
-            if (Instance == null)
-            {
-                Instance = new GameManager();
-            }
-            return Instance;
+            instance = new GameManager();
         }
+        return instance;    
     }
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(Instance);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(this.gameObject);
     }
 
     public void ChangeScene(string _sceneName)

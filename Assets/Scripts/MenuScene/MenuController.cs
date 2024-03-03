@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 
 public enum PanelType
@@ -24,10 +22,10 @@ public class MenuController : MonoBehaviour
 
     public void Start()
     {
-        gameManager = GameManager.Instance;
-        foreach(var _panel in panelList)
+        gameManager = GameManager.GetInstance();
+        foreach (var _panel in panelList)
         {
-            if(_panel) panelDict.Add(_panel.GetPanelType(), _panel);
+            if (_panel) panelDict.Add(_panel.GetPanelType(), _panel);
         }
 
         OpenOnePanel(PanelType.Main);
@@ -35,12 +33,12 @@ public class MenuController : MonoBehaviour
 
     private void OpenOnePanel(PanelType _type)
     {
-        foreach(var _panel in panelList)
+        foreach (var _panel in panelList)
         {
             _panel.ChangeState(false);
         }
-        
-        if(_type != PanelType.None)
+
+        if (_type != PanelType.None)
         {
             panelDict[_type].ChangeState(true);
         }

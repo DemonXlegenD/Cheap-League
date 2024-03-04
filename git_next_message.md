@@ -1,3 +1,3 @@
 ENH: Amelioration
 
-- Amélioration du bruit de perlin
+- Amélioration de la génération de la map

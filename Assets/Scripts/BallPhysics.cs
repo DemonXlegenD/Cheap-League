@@ -7,7 +7,7 @@ public class scrip : MonoBehaviour
     [SerializeField] private float magnitudeForce = 10f;
     [SerializeField] private float friction = 0.2f;
     [SerializeField] private float deceleration = 0.1f;
-    [SerializeField] private float initialMass = 1f;
+    [SerializeField] private float initialMass = 50f;
     [SerializeField] private float bounciness = 0.8f;
 
     void Start()
@@ -30,14 +30,15 @@ public class scrip : MonoBehaviour
 
             if (playerRb != null)
             {
-                Debug.Log("Hit");
                 Vector3 forceDirection = transform.position - playerRb.transform.position + Vector3.up;
-                GetComponent<Rigidbody>().AddForce(forceDirection.normalized * magnitudeForce, ForceMode.Impulse);
+                GetComponent<Rigidbody>().AddForce(forceDirection.normalized * magnitudeForce, ForceMode.VelocityChange);
             }
         } else
         {
             Vector3 normalForce = collision.contacts[0].normal;
             GetComponent<Rigidbody>().AddForce(normalForce * magnitudeForce * bounciness, ForceMode.Impulse);
         }
+
+        GetComponent<AudioSource>().Play();
     }
 }

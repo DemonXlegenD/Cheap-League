@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
+using static UnityEngine.GraphicsBuffer;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -100,16 +101,17 @@ public class CameraFollow : MonoBehaviour
         if (cameraLocked)
         {
             arrowPointer.SetActive(false);
-            targetDirection = target.position - ball.position + new Vector3(0, offset.y, 0);
+            targetDirection = target.position - ball.position + target.transform.up * offset.y;
             targetPosition = target.position + new Vector3(0, offset.y, 0) - (targetDirection.normalized * offset.z);
             //transform.position = Vector3.Lerp(transform.position, targetPosition, translateSpeed * Time.deltaTime);
-            TranslateCamera(targetPosition);
-            transform.LookAt(target.position);
+            //TranslateCamera(targetPosition);
+            transform.position = Vector3.Lerp(transform.position + new Vector3(0, 1, 0), targetPosition, translateSpeed * Time.deltaTime);
+            //transform.LookAt(target.position);
         } else
         {
             arrowPointer.SetActive(true);
-            targetDirection = target.position - transform.position;
-            arrowPointer.transform.position = target.position - (targetDirection.normalized * 3);
+            targetDirection = ball.position - target.position;
+            arrowPointer.transform.position = target.position + (targetDirection.normalized * 2);
             arrowPointer.transform.LookAt(ball.position);
             arrowPointer.transform.Rotate(90, 0, 0);
 

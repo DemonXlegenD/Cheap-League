@@ -11,6 +11,7 @@ public class CarController : MonoBehaviour
     private float steerAngle;
     private bool isBreaking;
     private float isBoosting;
+    private float isHandbreaking;
     private bool isFlicking;
     private Rigidbody rb;
     private float timeInAir = 0f;
@@ -21,14 +22,12 @@ public class CarController : MonoBehaviour
     private float roll = 0f;
 
 
-    [SerializeField, StringSelection("Jump 1", "Jump 2")] private string inputJumpName;
-    [SerializeField, StringSelection("Camera 1", "Camera 2")] private string inputCameraName;
-
     private List<InputAction> pressedKeys;
 
     [SerializeField] private GameObject ball;
 
     public Collider CarCollider;
+    public GameObject BoostGameObject;
     public WheelCollider frontLeftWheelCollider;
     public WheelCollider frontRightWheelCollider;
     public WheelCollider rearLeftWheelCollider;
@@ -54,14 +53,17 @@ public class CarController : MonoBehaviour
     [SerializeField] private float motorForce = 50f;
     [SerializeField] private float brakeForce = 0f;
     [SerializeField] private float jumpForce = 100f;
+    [SerializeField] private float flickForce = 10;
     [SerializeField] private float boostForce = 30f;
-    [SerializeField] private float yawpitchRotationSpeed = 20f;
-    [SerializeField] private float rollRotationSpeed = 20f;
+    [SerializeField] private float yawpitchRotationSpeed = 2f;
+    [SerializeField] private float rollRotationSpeed = 2f;
     [SerializeField, Range(0, 1)] private float flickDeadzone = 0.2f;
     [SerializeField, Range(0, 1)] private float aerialDeadzone = 0.2f;
 
 
-    [SerializeField] private Controls playerControls;
+    [SerializeField] private AudioSource EngineSound;
+    [SerializeField] private AudioSource JumpSound;
+    [SerializeField] private AudioSource FlickSound;
 
     private void Awake()
     {
@@ -120,12 +122,12 @@ public class CarController : MonoBehaviour
         {
             timeInAir = 0;
             canFlick = true;
-            rb.AddForce(transform.up * Physics.gravity.y * rb.mass * 2);
+            rb.AddForce(transform.up * Physics.gravity.y * rb.mass * 1.2f);
         }
 
         if (isBoosting > 0)
         {
-            rb.AddForce(transform.forward * rb.mass * boostForce * isBoosting);
+            rb.AddForce(-BoostGameObject.transform.right * rb.mass * boostForce * isBoosting);
         }
 
 
@@ -134,21 +136,14 @@ public class CarController : MonoBehaviour
         {
             rb.AddForce(transform.forward * motorForce * verticalInput);
         }
+        EngineSound.pitch = Mathf.Lerp(EngineSound.pitch, 1 + (rb.velocity.magnitude / 75) + ((rb.velocity.magnitude / 25) % 1.4f), 10 * Time.deltaTime);
+
     }
 
     bool IsGrounded()
     {
         return Physics.Raycast(transform.position, -transform.up, 1.5f);
     }
-
-    /*    public void GetInput()
-        {
-            Debug.Log(playerControls.Gameplay.Move.ReadValue<Vector2>());
-            horizontalInput = playerControls.Gameplay.Move.ReadValue<Vector2>().x;
-            verticalInput = playerControls.Gameplay.Move.ReadValue<Vector2>().y;
-            isJumping = Input.GetAxis("Jump 1");
-            isBreaking = Input.GetKey(KeyCode.Space);
-        }*/
 
     public void HandleRollLeft(InputAction.CallbackContext context)
     {
@@ -183,10 +178,11 @@ public class CarController : MonoBehaviour
         //flickPosition = new Vector3(flickPosition.x, 0, flickDirection.z);
         //flickDirection = new Vector3(flickDirection.x, 0, flickDirection.z);
 
-        rb.AddForce(flickPosition * rb.mass * 40, ForceMode.Impulse);
-        rb.AddTorque(flickDirection * rb.mass * 15, ForceMode.Impulse);
+        rb.angularVelocity = Vector3.zero;
+        rb.AddForce(flickPosition * rb.mass * flickForce * 1.5f, ForceMode.Impulse);
+        rb.AddTorque(flickDirection * rb.mass * flickForce, ForceMode.Impulse);
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.75f);
 
         rb.constraints = RigidbodyConstraints.None;
         rb.angularDrag = 5f;
@@ -243,7 +239,7 @@ public class CarController : MonoBehaviour
 
             if (roll > 0)
             {
-                rb.AddRelativeTorque(Vector3.back * rollRotationSpeed * rb.mass * horizontalInput * 20);
+                rb.AddRelativeTorque(Vector3.back * rollRotationSpeed * rb.mass * horizontalInput * 30);
 
                 //transform.Rotate(Vector3.back, rollRotationSpeed * 4 * horizontalInput);
             }
@@ -260,7 +256,7 @@ public class CarController : MonoBehaviour
 
         if (verticalInput > aerialDeadzone || verticalInput < -aerialDeadzone)
         {
-            rb.AddRelativeTorque(Vector3.right * rollRotationSpeed * rb.mass * verticalInput * 20);
+            rb.AddRelativeTorque(Vector3.right * rollRotationSpeed * rb.mass * verticalInput * 25);
 
             //transform.Rotate(Vector3.right, yawpitchRotationSpeed * 2 * verticalInput);
         }
@@ -306,18 +302,20 @@ public class CarController : MonoBehaviour
                         dirr = flickDirection;
                         dirr2 = flickPosition;
 
-
+                        FlickSound.Play();
                         //rb.velocity = new Vector3(rb.velocity.x, Physics.gravity.x, rb.velocity.z);
                     }
                     else
                     {
                         rb.AddForce(transform.up * rb.mass * jumpForce);
+                        JumpSound.Play();
                     }
                 }
             }
             else
             {
                 rb.AddForce(transform.up * rb.mass * jumpForce);
+                JumpSound.Play();
             }
         }
     }
@@ -325,17 +323,40 @@ public class CarController : MonoBehaviour
     public void HandleBoost(InputAction.CallbackContext context)
     {
         isBoosting = context.action.ReadValue<float>();
+
+        if (isBoosting > 0)
+        {
+            BoostGameObject.GetComponent<ParticleSystem>().Play();
+        }
+        else
+        {
+            BoostGameObject.GetComponent<ParticleSystem>().Stop();
+        }
+    }
+
+    public void HandleHandbrake(InputAction.CallbackContext context)
+    {
+        isHandbreaking = context.action.ReadValue<float>();
+
+        float newStiffness = 2f;
+        if (isHandbreaking > 0) {
+            newStiffness = 0.5f;
+        }
+
+        WheelFrictionCurve friction = frontLeftWheelCollider.GetComponent<WheelCollider>().forwardFriction;
+        friction.stiffness = newStiffness;
+        frontLeftWheelCollider.GetComponent<WheelCollider>().forwardFriction = friction;
+        frontRightWheelCollider.GetComponent<WheelCollider>().sidewaysFriction = friction;
+        rearLeftWheelCollider.GetComponent<WheelCollider>().sidewaysFriction = friction;
+        rearRightWheelCollider.GetComponent<WheelCollider>().sidewaysFriction = friction;
     }
 
     public void HandleSteering(InputAction.CallbackContext context)
     {
-        if (IsGrounded())
-        {
-            horizontalInput = context.ReadValue<Vector2>().x;
-            steerAngle = maxSteeringAngle * horizontalInput;
-            frontLeftWheelCollider.steerAngle = steerAngle;
-            frontRightWheelCollider.steerAngle = steerAngle;
-        }
+        horizontalInput = context.ReadValue<Vector2>().x;
+        steerAngle = maxSteeringAngle * horizontalInput;
+        frontLeftWheelCollider.steerAngle = steerAngle;
+        frontRightWheelCollider.steerAngle = steerAngle;
     }
 
     public void HandleMotor(InputAction.CallbackContext context)

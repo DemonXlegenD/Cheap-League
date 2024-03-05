@@ -122,7 +122,7 @@ public class CarController : MonoBehaviour
         {
             timeInAir = 0;
             canFlick = true;
-            rb.AddForce(transform.up * Physics.gravity.y * rb.mass * 1.2f);
+            //rb.AddForce(transform.up * Physics.gravity.y * rb.mass * 1.2f);
         }
 
         if (isBoosting > 0)
@@ -135,6 +135,9 @@ public class CarController : MonoBehaviour
         if (IsGrounded())
         {
             rb.AddForce(transform.forward * motorForce * verticalInput);
+            Debug.Log("VI: " + verticalInput);
+            Debug.Log("m: " + motorForce);
+
         }
         EngineSound.pitch = Mathf.Lerp(EngineSound.pitch, 1 + (rb.velocity.magnitude / 75) + ((rb.velocity.magnitude / 25) % 1.4f), 10 * Time.deltaTime);
 

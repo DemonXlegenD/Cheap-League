@@ -8,18 +8,22 @@ public class scrip : MonoBehaviour
     [SerializeField] private float friction = 0.2f;
     [SerializeField] private float deceleration = 0.1f;
     [SerializeField] private float initialMass = 50f;
-    [SerializeField] private float bounciness = 0.8f;
+    [SerializeField] private float bounciness = 10f;
+
+    private Rigidbody rb;
 
     void Start()
     {
-        GetComponent<Rigidbody>().mass = initialMass;
+        rb = GetComponent<Rigidbody>();
+        rb.mass = initialMass;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        GetComponent<Rigidbody>().velocity *= (1 - deceleration * Time.deltaTime);
+        rb.velocity *= (1 - deceleration * Time.deltaTime);
         magnitudeForce *= (1 - friction * Time.deltaTime);
+        rb.AddForce(Vector3.up * Physics.gravity.y * rb.mass);
     }
 
     private void OnCollisionStay(Collision collision)
@@ -28,15 +32,19 @@ public class scrip : MonoBehaviour
         {
             Rigidbody playerRb = collision.gameObject.GetComponent<Rigidbody>();
 
+
             if (playerRb != null)
             {
-                Vector3 forceDirection = transform.position - playerRb.transform.position + Vector3.up;
-                GetComponent<Rigidbody>().AddForce(forceDirection.normalized * magnitudeForce, ForceMode.VelocityChange);
+                Debug.Log("hit player");
+                Vector3 forceDirection = transform.position - playerRb.centerOfMass;
+                Vector3 relativeVelocity = playerRb.GetRelativePointVelocity(transform.position - playerRb.centerOfMass);
+
+                rb.AddForce(forceDirection * Vector3.Dot(forceDirection.normalized, relativeVelocity) * magnitudeForce, ForceMode.Impulse);
             }
         } else
         {
             Vector3 normalForce = collision.contacts[0].normal;
-            GetComponent<Rigidbody>().AddForce(normalForce * magnitudeForce * bounciness, ForceMode.Impulse);
+            //rb.AddForce(normalForce * magnitudeForce * bounciness * rb.mass, ForceMode.Impulse);
         }
 
         GetComponent<AudioSource>().Play();

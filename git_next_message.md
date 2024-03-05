@@ -1,5 +1,6 @@
-ENH: Fin apprentissage Nova
+ENH: Amelioration
 
-- UI terminé
-- Reprise du template et des exemples de la Librairie
-- Introduction au ScrollBar
+- Amélioration de la génération de la map
+- Map infinie avec un niveau de détail différent selon la distance entre le chunk et le joueur
+- Rajout des couleurs
+- Optimisations grâce aux Threadings

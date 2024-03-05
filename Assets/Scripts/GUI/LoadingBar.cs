@@ -8,7 +8,7 @@ public class LoadingBar : MonoBehaviour
 {
 
     [Header("Player")]
-    [SerializeField]  private GameObject player;
+    [SerializeField] private GameObject player;
 
     private PlayerController fpsController;
 

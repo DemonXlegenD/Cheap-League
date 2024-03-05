@@ -5,6 +5,8 @@ using UnityEngine;
 public class EndlessTerrain : MonoBehaviour
 {
 
+    [SerializeField] private const float scale = 1f;
+
     const float viewerMoveThresholdForChunkUpdate = 25f;
     const float sqrViewerMoveThresholdForChunkUpdate = viewerMoveThresholdForChunkUpdate * viewerMoveThresholdForChunkUpdate;
 
@@ -21,7 +23,7 @@ public class EndlessTerrain : MonoBehaviour
     [SerializeField] private int chunksVisibleInViewDst;
 
     Collection<Vector2, TerrainChunk> terrainChunkCollection = new Collection<Vector2, TerrainChunk>();
-    List<TerrainChunk> terrainChunkVisibleList = new List<TerrainChunk>();
+    static List<TerrainChunk> terrainChunkVisibleList = new List<TerrainChunk>();
 
     private void Start()
     {
@@ -37,7 +39,7 @@ public class EndlessTerrain : MonoBehaviour
 
     private void Update()
     {
-        viewerPosition = new Vector2(viewer.position.x, viewer.position.z);
+        viewerPosition = new Vector2(viewer.position.x, viewer.position.z) / 2;
         if ((viewerPositionOld - viewerPosition).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate)
         {
             viewerPositionOld = viewerPosition;
@@ -111,8 +113,9 @@ public class EndlessTerrain : MonoBehaviour
             meshFilter = meshObject.AddComponent<MeshFilter>();
             meshRenderer.material = material;
 
-            meshObject.transform.position = positionV3;
+            meshObject.transform.position = positionV3 * scale;
             meshObject.transform.parent = parent;
+            meshObject.transform.localScale = Vector3.one* scale;
             SetVisible(false);
 
             lodMeshes = new LODMesh[detailLevels.Length];
@@ -168,8 +171,9 @@ public class EndlessTerrain : MonoBehaviour
                         }
                         else if (!lodMesh.hasRequestedMesh) lodMesh.RequestMesh(mapData);
                     }
+                    terrainChunkVisibleList.Add(this);
                 }
-                SetVisible(visible);
+                SetVisible(visible);    
             }
         }
 

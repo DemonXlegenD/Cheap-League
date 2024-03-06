@@ -1,38 +1,58 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    private static GameManager _instance;
+
     public static GameManager Instance
     {
-        private set { Instance = value; }
         get
         {
-            if (Instance == null)
+            if (_instance == null)
             {
-                Instance = new GameManager();
+                _instance = FindObjectOfType<GameManager>();
+
+                if (_instance == null)
+                {
+                    GameObject singletonObject = new GameObject("GameManager");
+                    _instance = singletonObject.AddComponent<GameManager>();
+                }
             }
-            return Instance;
+            return _instance;
         }
     }
 
+    private string previousLoadedScene = null;
+
     private void Awake()
     {
-        if (Instance != null)
+        if (_instance != null && _instance != this)
         {
-            Destroy(Instance);
-            return;
+            Destroy(this.gameObject);
         }
-        Instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        else
+        {
+            _instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        previousLoadedScene = SceneManager.GetActiveScene().name;
+    }
+
+    public void StartGame()
+    {
+        Debug.Log("Le jeu commence !");
     }
 
     public void ChangeScene(string _sceneName)
     {
+        previousLoadedScene = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(_sceneName);
+    }
+
+    public void LoadPreviousScene()
+    {
+        SceneManager.LoadScene(previousLoadedScene);
     }
 
     public void Quit()

@@ -1,3 +1,4 @@
-NEW: Game GOAL
+ENH: Fin Mode de jeu GOAL
 
-- Création d'un nouveau mode de jeu
+- Mode de jeu GOAL terminé
+- Revoir avec le prof la génération des obstacles

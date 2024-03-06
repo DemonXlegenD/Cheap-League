@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,20 +15,15 @@ public class EndlessTerrain : MonoBehaviour
     public static float maxViewDst;
 
     public Transform[] viewers;
-    public Transform viewer1;
-    public Transform viewer2;
     public Material mapMaterial;
 
-    public static Vector2 viewerPosition1;
-    public static Vector2 viewerPosition2;
     public static Vector2[] viewersPosition;
 
-    Vector2 viewerPositionOld1;
-    Vector2 viewerPositionOld2;
     Vector2[] viewersPositionOld;
 
     static MapGenerator mapGenerator;
     static BallGenerator ballGenerator;
+    static ObstacleSpawner ObstacleSpawner;
 
     int chunkSize;
     int chunksVisibleInViewDst;
@@ -40,6 +36,7 @@ public class EndlessTerrain : MonoBehaviour
     {
         mapGenerator = FindObjectOfType<MapGenerator>();
         ballGenerator = FindObjectOfType<BallGenerator>();
+        ObstacleSpawner = FindObjectOfType<ObstacleSpawner>();
 
         maxViewDst = detailLevels[detailLevels.Length - 1].visibleDstThreshold;
         chunkSize = MapGenerator.mapChunkSize - 1;
@@ -49,60 +46,13 @@ public class EndlessTerrain : MonoBehaviour
         UpdateVisibleChunks();
     }
 
-    /*private void Update()
+    private void OnDestroy()
     {
-        viewerPosition1 = new Vector2(viewer1.position.x, viewer1.position.z) / 2f;
+        terrainChunkDictionary.Clear();
+        terrainChunksVisibleLastUpdate.Clear();
+        ballOnTerrainLists.Clear();
+    }
 
-        if ((viewerPositionOld1 - viewerPosition1).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate)
-        {
-            viewerPositionOld1 = viewerPosition1;
-            UpdateVisibleChunks();
-        }
-    }*/
-
-    /* void UpdateVisibleChunks()
-     {
-
-         for (int i = 0; i < terrainChunksVisibleLastUpdate.Count; i++)
-         {
-             terrainChunksVisibleLastUpdate[i].SetVisible(false);
-         }
-         terrainChunksVisibleLastUpdate.Clear();
-
-
-         int currentChunkCoordX = Mathf.RoundToInt(viewerPosition1.x / chunkSize);
-         int currentChunkCoordY = Mathf.RoundToInt(viewerPosition1.y / chunkSize);
-
-         for (int yOffset = -chunksVisibleInViewDst; yOffset <= chunksVisibleInViewDst; yOffset++)
-         {
-             for (int xOffset = -chunksVisibleInViewDst; xOffset <= chunksVisibleInViewDst; xOffset++)
-             {
-                 Vector2 viewedChunkCoord = new Vector2(currentChunkCoordX + xOffset, currentChunkCoordY + yOffset);
-
-                 if (terrainChunkDictionary.ContainsKey(viewedChunkCoord))
-                 {
-                     terrainChunkDictionary[viewedChunkCoord].UpdateTerrainChunk();
-                 }
-                 else
-                 {
-                     terrainChunkDictionary.Add(viewedChunkCoord, new TerrainChunk(viewedChunkCoord, chunkSize, detailLevels, transform, mapMaterial));
-                     if (!Vector2.Equals(viewedChunkCoord, Vector2.zero))
-                     {
-                         int numberBalls = Random.Range(1, 6);
-
-                         for (int i = 0; i < numberBalls; i++)
-                         {
-                             int randomPosX = Random.Range(((int)viewedChunkCoord.x * chunkSize) - (chunkSize / 2), ((int)viewedChunkCoord.x * chunkSize) + (chunkSize / 2));
-                             int randomPosZ = Random.Range(((int)viewedChunkCoord.y * chunkSize) - (chunkSize / 2), ((int)viewedChunkCoord.y * chunkSize) + (chunkSize / 2));
-                             int randomPosY = Random.Range(2, 31);
-                             ballOnTerrainLists.Add(ballGenerator.GenerateBalls(new Vector3(randomPosX, randomPosY, randomPosZ)));
-                         }
-                     }
-
-                 }
-             }
-         }
-     }*/
     private void Update()
     {
         viewersPosition[0] = new Vector2(viewers[0].position.x, viewers[0].position.z) / 2f;
@@ -147,7 +97,8 @@ public class EndlessTerrain : MonoBehaviour
                     }
                     else
                     {
-                        terrainChunkDictionary.Add(viewedChunkCoord, new TerrainChunk(viewedChunkCoord, chunkSize, detailLevels, transform, mapMaterial));
+                        TerrainChunk newT = new TerrainChunk(viewedChunkCoord, chunkSize, detailLevels, transform, mapMaterial);
+                        terrainChunkDictionary.Add(viewedChunkCoord, newT);
                         if (!Vector2.Equals(viewedChunkCoord, Vector2.zero))
                         {
                             int numberBalls = Random.Range(1, 6);
@@ -159,8 +110,8 @@ public class EndlessTerrain : MonoBehaviour
                                 int randomPosY = Random.Range(2, 31);
                                 ballOnTerrainLists.Add(ballGenerator.GenerateBalls(new Vector3(randomPosX, randomPosY, randomPosZ)));
                             }
-                        }
 
+                        }
                     }
                 }
             }
@@ -170,8 +121,11 @@ public class EndlessTerrain : MonoBehaviour
 
     public class TerrainChunk
     {
+
+        List<GameObject> obstacles = new List<GameObject>();
         GameObject meshObject;
         public int size;
+        public Vector2 coord;
         public Vector2 position;
         public Bounds bounds;
 
@@ -191,6 +145,7 @@ public class EndlessTerrain : MonoBehaviour
         {
             this.detailsLevels = detailsLevels;
             this.size = size;
+            this.coord = coord;
             position = coord * size;
             bounds = new Bounds(position, Vector2.one * size);
             Vector3 positionV3 = new Vector3(position.x, 0, position.y);
@@ -217,6 +172,19 @@ public class EndlessTerrain : MonoBehaviour
             }
 
             mapGenerator.RequestMapData(position, OnMapDataReceived);
+          
+        }
+
+        void GenerateObstacles()
+        {
+            int numberObstacles = Random.Range(10, 20);
+            for (int i = 0; i < numberObstacles; i++)
+            {
+                Vector2 minChunk = (coord - Vector2.one / 2) * this.size;
+                Vector2 maxChunk = (coord + Vector2.one / 2) * this.size;
+                GameObject newObstacle = ObstacleSpawner.SpawnObstacles(minChunk, maxChunk);
+                if (newObstacle != null) obstacles.Add(newObstacle);
+            }
         }
 
         void OnMapDataReceived(MapData mapData)
@@ -228,70 +196,8 @@ public class EndlessTerrain : MonoBehaviour
             meshRenderer.material.mainTexture = texture;
 
             UpdateTerrainChunk();
+            GenerateObstacles();
         }
-
-       /* public void UpdateTerrainChunk()
-        {
-            if (mapDataReceived)
-            {
-                float viewerDstFromNearestEdge = Mathf.Sqrt(bounds.SqrDistance(viewerPosition1));
-                bool visible = viewerDstFromNearestEdge <= maxViewDst;
-
-                if (visible)
-                {
-                    int lodIndex = 0;
-
-                    for (int i = 0; i < detailsLevels.Length - 1; i++)
-                    {
-                        if (viewerDstFromNearestEdge > detailsLevels[i].visibleDstThreshold)
-                        {
-                            lodIndex = i + 1;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-
-                    if (lodIndex != previousLODIndex)
-                    {
-                        LODMesh lodMesh = lodMeshes[lodIndex];
-                        if (lodMesh.hasMesh)
-                        {
-                            previousLODIndex = lodIndex;
-                            meshFilter.mesh = lodMesh.mesh;
-                            meshCollider.sharedMesh = lodMesh.mesh;
-                        }
-                        else if (!lodMesh.hasRequestedMesh)
-                        {
-                            lodMesh.RequestMesh(mapData);
-                        }
-                    }
-
-                    if (lodIndex == 0 || lodIndex == 1)
-                    {
-                        if (collisionLODMesh.hasMesh)
-                        {
-                            meshCollider.sharedMesh = collisionLODMesh.mesh;
-                        }
-                        else if (!collisionLODMesh.hasRequestedMesh)
-                        {
-                            collisionLODMesh.RequestMesh(mapData);
-                        }
-                    }
-                    terrainChunksVisibleLastUpdate.Add(this);
-                }
-
-                foreach (var ball in ballOnTerrainLists)
-                {
-                    if (IsInMeshZone(ball, meshRenderer.bounds))
-                    {
-                        ball.SetActive(visible);
-                    }
-                }
-                SetVisible(visible);
-            }
-        }*/
 
         public void UpdateTerrainChunk()
         {
@@ -351,6 +257,14 @@ public class EndlessTerrain : MonoBehaviour
                     if (IsInMeshZone(ballOnTerrainLists[j], meshRenderer.bounds))
                     {
                         ballOnTerrainLists[j].SetActive(visible);
+                    }
+                }
+
+                for (int j = 0; j < obstacles.Count; j++) 
+                {
+                    if (IsInMeshZone(obstacles[j], meshRenderer.bounds))
+                    {
+                        obstacles[j].SetActive(visible);
                     }
                 }
                 SetVisible(visible);

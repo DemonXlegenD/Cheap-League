@@ -6,6 +6,7 @@ public enum PanelType
 {
     None,
     Main,
+    Room,
     Options,
     Credits,
 }
@@ -16,13 +17,11 @@ public class MenuController : MonoBehaviour
     [SerializeField] private List<MenuPanel> panelList = new List<MenuPanel>();
     private Dictionary<PanelType, MenuPanel> panelDict = new Dictionary<PanelType, MenuPanel>();
 
-
-
     private GameManager gameManager;
 
-    public void Start()
+    private void Start()
     {
-        gameManager = GameManager.GetInstance();
+        gameManager = GameManager.Instance;
         foreach (var _panel in panelList)
         {
             if (_panel) panelDict.Add(_panel.GetPanelType(), _panel);

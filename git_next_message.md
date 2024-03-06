@@ -1,3 +1,3 @@
-FIX: Master
+NEW: Game GOAL
 
-- MASTER OF PUPPETS
+- Création d'un nouveau mode de jeu

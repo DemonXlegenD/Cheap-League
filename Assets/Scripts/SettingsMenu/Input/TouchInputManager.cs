@@ -7,22 +7,22 @@ public class TouchInputManager : MonoBehaviour
     {
         for (int i = 0; i < Input.touchCount; i++)
         {
-            // Using Unity's legacy input system, get the first touch point.
+            // Utilise le système d'entrée hérité de Unity pour obtenir le premier point de contact.
             Touch touch = Input.GetTouch(i);
 
-            // Convert the touch point to a world-space ray.
+            // Convertit le point de contact en un rayon dans l'espace du monde.
             Ray ray = Camera.main.ScreenPointToRay(touch.position);
 
-            // Create a new Interaction from the ray and the finger's ID
+            // Crée une nouvelle Interaction à partir du rayon et de l'ID du doigt.
             Interaction.Update interaction = new Interaction.Update(ray, (uint)touch.fingerId);
 
-            // Get the current touch phase
+            // Obtient la phase de contact tactile actuelle.
             TouchPhase touchPhase = touch.phase;
 
-            // If the touch phase hasn't ended and hasn't been canceled, then pointerDown == true.
+            // Si la phase de contact tactile n'est ni terminée ni annulée, alors pointerDown == true.
             bool pointerDown = touchPhase != TouchPhase.Canceled && touchPhase != TouchPhase.Ended;
 
-            // Feed the update and pressed state to Nova's Interaction APIs
+            // Alimente la mise à jour et l'état enfoncé aux APIs d'interaction de Nova.
             Interaction.Point(interaction, pointerDown);
         }
     }

@@ -41,7 +41,7 @@ public class InputManager : MonoBehaviour
         // Envoyer la mise à jour du pointeur et l'état du bouton de la souris aux APIs d'interaction de Nova
         Interaction.Point(mousePointerInteraction, leftMouseButtonDown);
 
-        // Vérifier si une manette est branchée
+       /* // Vérifier si une manette est branchée
         if (Input.GetJoystickNames().Length > 0)
         {
             // Obtenir l'entrée d'axe vertical de la manette
@@ -71,6 +71,6 @@ public class InputManager : MonoBehaviour
 
             // Envoyer la mise à jour du pointeur avec la manette et l'état du bouton de la manette aux APIs d'interaction de Nova
             Interaction.Point(joystickPointerInteraction, joystickPrimaryButtonDown);
-        }
+        }*/
     }
 }

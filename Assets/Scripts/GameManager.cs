@@ -3,20 +3,16 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    // Instance statique de GameManager
     private static GameManager _instance;
 
-    // Propriété pour accéder à l'instance
     public static GameManager Instance
     {
         get
         {
-            // Si l'instance est nulle, cherchez dans la scène une instance existante
             if (_instance == null)
             {
                 _instance = FindObjectOfType<GameManager>();
 
-                // Si aucune instance n'existe dans la scène, créez-en une
                 if (_instance == null)
                 {
                     GameObject singletonObject = new GameObject("GameManager");
@@ -27,6 +23,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private string previousLoadedScene = null;
 
     private void Awake()
     {
@@ -39,6 +36,7 @@ public class GameManager : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
+        previousLoadedScene = SceneManager.GetActiveScene().name;
     }
 
     public void StartGame()
@@ -48,7 +46,13 @@ public class GameManager : MonoBehaviour
 
     public void ChangeScene(string _sceneName)
     {
+        previousLoadedScene = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(_sceneName);
+    }
+
+    public void LoadPreviousScene()
+    {
+        SceneManager.LoadScene(previousLoadedScene);
     }
 
     public void Quit()

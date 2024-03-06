@@ -1,3 +1,4 @@
-FIX: Master
+ENH: Fin Mode de jeu GOAL
 
-- MASTER OF PUPPETS
+- Mode de jeu GOAL terminé
+- Revoir avec le prof la génération des obstacles

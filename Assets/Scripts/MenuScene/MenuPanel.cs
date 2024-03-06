@@ -1,18 +1,20 @@
+using Nova;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Canvas))]
+[RequireComponent(typeof(UIBlock))]
 public class MenuPanel : MonoBehaviour
 {
 
     [SerializeField] private PanelType type;
     private bool state = false;
 
-    private Canvas canvas;
+
+    private UIBlock uiBlock;
     public void Awake()
     {
-        canvas = GetComponent<Canvas>();
+        uiBlock = GetComponent<UIBlock>();
     }
 
     #region State
@@ -20,7 +22,8 @@ public class MenuPanel : MonoBehaviour
     private void UpdateState()
     {
         //Mettre une animation
-        canvas.enabled = state;
+        uiBlock.enabled = state;
+        uiBlock.gameObject.SetActive(state);
     }
 
     public void ChangeState()

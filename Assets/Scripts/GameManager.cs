@@ -1,33 +1,49 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    // Instance statique de GameManager
+    private static GameManager _instance;
+
+    // Propriété pour accéder à l'instance
     public static GameManager Instance
     {
-        private set { Instance = value; }
         get
         {
-            if (Instance == null)
+            // Si l'instance est nulle, cherchez dans la scène une instance existante
+            if (_instance == null)
             {
-                Instance = new GameManager();
+                _instance = FindObjectOfType<GameManager>();
+
+                // Si aucune instance n'existe dans la scène, créez-en une
+                if (_instance == null)
+                {
+                    GameObject singletonObject = new GameObject("GameManager");
+                    _instance = singletonObject.AddComponent<GameManager>();
+                }
             }
-            return Instance;
+            return _instance;
         }
     }
 
+
     private void Awake()
     {
-        if (Instance != null)
+        if (_instance != null && _instance != this)
         {
-            Destroy(Instance);
-            return;
+            Destroy(this.gameObject);
         }
-        Instance = this;
-        DontDestroyOnLoad(this.gameObject);
+        else
+        {
+            _instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+    }
+
+    public void StartGame()
+    {
+        Debug.Log("Le jeu commence !");
     }
 
     public void ChangeScene(string _sceneName)

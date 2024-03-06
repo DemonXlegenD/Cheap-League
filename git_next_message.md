@@ -1,6 +1,4 @@
-ENH: Amelioration
+NEW: Menu
 
-- Amélioration de la génération de la map
-- Map infinie avec un niveau de détail différent selon la distance entre le chunk et le joueur
-- Rajout des couleurs
-- Optimisations grâce aux Threadings
+- Changement de l'UI
+- Création d'une room pour choisir le mode de jeu

@@ -21,8 +21,7 @@ public class GameManager : MonoBehaviour
                 }
             }
             return _instance;
-        }
-        return instance;    
+        } 
     }
 
     private string previousLoadedScene = null;

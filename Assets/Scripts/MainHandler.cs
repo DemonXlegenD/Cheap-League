@@ -19,7 +19,7 @@ public class MainHandler : MonoBehaviour
     {
         if (m_OnGoalScored == null)
             m_OnGoalScored = new UnityEvent();
-        scoreController = new ScoreController();
+        scoreController = FindAnyObjectByType<ScoreController>();
         m_OnGoalScored.AddListener(OnGoalScored);
     }
 

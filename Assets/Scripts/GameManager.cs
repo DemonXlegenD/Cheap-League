@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+
     private static GameManager _instance;
 
     public static GameManager Instance
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour
             }
             return _instance;
         }
+        return instance;    
     }
 
     private string previousLoadedScene = null;

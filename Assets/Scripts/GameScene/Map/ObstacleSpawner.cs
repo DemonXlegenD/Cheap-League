@@ -9,9 +9,9 @@ public class ObstacleSpawner : MonoBehaviour
     public GameObject[] obstaclePrefabs;
     public GameObject parentGameObject;
     public Collider[] forbiddenZones;
-    public float bufferDistance = 2f;
+    public float bufferDistance = 1.5f;
 
-    public int maxTries = 10;
+    public int maxTries = 1000;
 
     void Start()
     {
@@ -24,17 +24,19 @@ public class ObstacleSpawner : MonoBehaviour
         while (tries < maxTries)
         {
             //Ca ne marche pas, peut etre à cause de la génération procédurale... le fait que ca soit un mesh?
-            /*Vector2 randomPoint = GenerateRandomPoint(chunkMin, chunkMax);
-            RaycastHit2D hit = Physics2D.Raycast(randomPoint, Vector2.down, Mathf.Infinity, groundLayer);
-            Debug.Log(randomPoint);
-            if (hit.collider != null)
+            /*RaycastHit hitRc;
+            Vector3 randomPoint = GenerateRandomPoint(chunkMin, chunkMax);
+            bool hit = Physics.Raycast(randomPoint, Vector3.down, out hitRc, Mathf.Infinity, groundLayer);
+
+            if (hit)
             {
-                bool canPlace = CheckObstaclePlacement(hit.point);
+                Debug.Log(hitRc.point);
+                bool canPlace = CheckObstaclePlacement(hitRc.point);
 
                 if (canPlace)
                 {
 
-                    GameObject newObstacle = Instantiate(obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)], hit.point, Quaternion.identity);
+                    GameObject newObstacle = Instantiate(obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)], hitRc.point, Quaternion.identity);
                     if (parentGameObject != null)
                     {
                         newObstacle.transform.parent = parentGameObject.transform;
@@ -42,71 +44,40 @@ public class ObstacleSpawner : MonoBehaviour
                     return newObstacle;
                 }
             }*/
-
-                Vector2 randomPoint = GenerateRandomPoint(chunkMin, chunkMax);
-            if (!IsInForbiddenZone(randomPoint))
+            Vector3 randomPoint = GenerateRandomPoint(chunkMin, chunkMax);
+            if(CheckObstaclePlacement(randomPoint) && !IsInForbiddenZone(randomPoint))
             {
-                bool canPlace = CheckObstaclePlacement(new Vector2(randomPoint.x, 20));
-
-                if (canPlace)
+                GameObject newObstacle = Instantiate(obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)], randomPoint, Quaternion.identity);
+                if (parentGameObject != null)
                 {
-
-                    GameObject newObstacle = Instantiate(obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)], new Vector3(randomPoint.x, -2, randomPoint.y), Quaternion.identity);
-                    if (parentGameObject != null)
-                    {
-                        newObstacle.transform.parent = parentGameObject.transform;
-                    }
-                    return newObstacle;
+                    newObstacle.transform.parent = parentGameObject.transform;
                 }
+                return newObstacle;
             }
-            
-
 
             tries++;
         }
         return null;
     }
 
-    Vector2 GenerateRandomPoint(Vector2 chunkMin, Vector2 chunkMax)
+    Vector3 GenerateRandomPoint(Vector2 chunkMin, Vector2 chunkMax)
     {
-        Vector2 randomPoint = Vector2.zero;
-        bool pointFound = false;
-
-        while (!pointFound)
-        {
-            randomPoint = new Vector2(Random.Range(chunkMin.x, chunkMax.x), Random.Range(chunkMin.y, chunkMax.y));
-
-            if (Physics2D.OverlapCircle(randomPoint, minDistanceBetweenObstacles) == null)
-            {
-                pointFound = true;
-            }
-        }
-
+        Vector3 randomPoint = new Vector3(Random.Range(chunkMin.x, chunkMax.x), -4, Random.Range(chunkMin.y, chunkMax.y));
         return randomPoint;
     }
 
-    bool CheckObstaclePlacement(Vector2 position)
+    bool CheckObstaclePlacement(Vector3 position)
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(position, spawnRadius);
+        Collider[] colliders = Physics.OverlapSphere(position, spawnRadius);
 
         // Vérifier si l'emplacement est déjà occupé par un obstacle
-        foreach (Collider2D collider in colliders)
+        foreach (Collider collider in colliders)
         {
             if (collider.CompareTag("Obstacle"))
             {
                 return false;
             }
         }
-
-        // Vérifier s'il y a des obstacles proches
-        Collider2D[] nearbyColliders = Physics2D.OverlapCircleAll(position, minDistanceBetweenObstacles);
-        if (nearbyColliders.Length > 1) // Compte le collider de l'obstacle que nous allons placer
-        {
-            return false;
-        }
-
-        // Vous pouvez ajouter d'autres vérifications ici, par exemple, s'il est trop près du joueur, etc.
-
         return true;
     }
 

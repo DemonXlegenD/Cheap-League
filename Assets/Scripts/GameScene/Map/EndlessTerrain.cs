@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class EndlessTerrain : MonoBehaviour
@@ -99,24 +97,10 @@ public class EndlessTerrain : MonoBehaviour
                     {
                         TerrainChunk newT = new TerrainChunk(viewedChunkCoord, chunkSize, detailLevels, transform, mapMaterial);
                         terrainChunkDictionary.Add(viewedChunkCoord, newT);
-                        if (!Vector2.Equals(viewedChunkCoord, Vector2.zero))
-                        {
-                            int numberBalls = Random.Range(1, 6);
-
-                            for (int i = 0; i < numberBalls; i++)
-                            {
-                                int randomPosX = Random.Range(((int)viewedChunkCoord.x * chunkSize) - (chunkSize / 2), ((int)viewedChunkCoord.x * chunkSize) + (chunkSize / 2));
-                                int randomPosZ = Random.Range(((int)viewedChunkCoord.y * chunkSize) - (chunkSize / 2), ((int)viewedChunkCoord.y * chunkSize) + (chunkSize / 2));
-                                int randomPosY = Random.Range(2, 31);
-                                ballOnTerrainLists.Add(ballGenerator.GenerateBalls(new Vector3(randomPosX, randomPosY, randomPosZ)));
-                            }
-
-                        }
                     }
                 }
             }
         }
-
     }
 
     public class TerrainChunk
@@ -172,18 +156,32 @@ public class EndlessTerrain : MonoBehaviour
             }
 
             mapGenerator.RequestMapData(position, OnMapDataReceived);
-          
+            GenerateObstacles();
         }
 
-        void GenerateObstacles()
+        public void GenerateObstacles()
         {
-            int numberObstacles = Random.Range(10, 20);
-            for (int i = 0; i < numberObstacles; i++)
+            if (coord.x != 0 || coord.y != 0)
             {
-                Vector2 minChunk = (coord - Vector2.one / 2) * this.size;
-                Vector2 maxChunk = (coord + Vector2.one / 2) * this.size;
-                GameObject newObstacle = ObstacleSpawner.SpawnObstacles(minChunk, maxChunk);
-                if (newObstacle != null) obstacles.Add(newObstacle);
+                int numberObstacles = Random.Range(5, 10);
+                Vector2 minChunk = (coord - (Vector2.one / 2)) * this.size;
+                Vector2 maxChunk = (coord + (Vector2.one / 2)) * this.size;
+                for (int i = 0; i < numberObstacles; i++)
+                {
+                    GameObject newObstacle = ObstacleSpawner.SpawnObstacles(minChunk, maxChunk);
+                    if (newObstacle != null) obstacles.Add(newObstacle);
+                }
+
+                int numberBalls = Random.Range(1, 4);
+
+                for (int i = 0; i < numberBalls; i++)
+                {
+                    int randomPosX = Random.Range((int)minChunk.x, (int)maxChunk.x);
+                    int randomPosZ = Random.Range((int)minChunk.y, (int)maxChunk.y);
+                    int randomPosY = Random.Range(2, 31);
+                    ballOnTerrainLists.Add(ballGenerator.GenerateBalls(new Vector3(randomPosX, randomPosY, randomPosZ)));
+                }
+
             }
         }
 
@@ -196,7 +194,7 @@ public class EndlessTerrain : MonoBehaviour
             meshRenderer.material.mainTexture = texture;
 
             UpdateTerrainChunk();
-            GenerateObstacles();
+
         }
 
         public void UpdateTerrainChunk()
@@ -238,33 +236,47 @@ public class EndlessTerrain : MonoBehaviour
                         }
                     }
 
-                    /*if (lodIndex == 0 || lodIndex == 1)
-                    {*/
-                        if (collisionLODMesh.hasMesh)
-                        {
-                            meshCollider.sharedMesh = collisionLODMesh.mesh;
-                        }
-                        else if (!collisionLODMesh.hasRequestedMesh)
-                        {
-                            collisionLODMesh.RequestMesh(mapData);
-                        }
-                    /*}*/
+
+                    if (collisionLODMesh.hasMesh)
+                    {
+                        meshCollider.sharedMesh = collisionLODMesh.mesh;
+                    }
+                    else if (!collisionLODMesh.hasRequestedMesh)
+                    {
+                        collisionLODMesh.RequestMesh(mapData);
+                    }
+
                     terrainChunksVisibleLastUpdate.Add(this);
                 }
 
-                for (int j = 0; j < ballOnTerrainLists.Count; j ++) // Utilisation du for i plutot que foreach pour éviter les problèmes lors de la destruction des balles
+                for (int j = 0; j < ballOnTerrainLists.Count; j++) // Utilisation du for i plutot que foreach pour éviter les problèmes lors de la destruction des balles
                 {
-                    if (IsInMeshZone(ballOnTerrainLists[j], meshRenderer.bounds))
+                    if (ballOnTerrainLists[j] != null)
                     {
-                        ballOnTerrainLists[j].SetActive(visible);
+                        if (IsInMeshZone(ballOnTerrainLists[j], meshRenderer.bounds))
+                        {
+                            ballOnTerrainLists[j].SetActive(visible);
+                        }
                     }
+                    else
+                    {
+                        ballOnTerrainLists.Remove(ballOnTerrainLists[j]);
+                    }
+
                 }
 
-                for (int j = 0; j < obstacles.Count; j++) 
+                for (int j = 0; j < obstacles.Count; j++)
                 {
-                    if (IsInMeshZone(obstacles[j], meshRenderer.bounds))
+                    if (obstacles[j] != null)
                     {
-                        obstacles[j].SetActive(visible);
+                        if (IsInMeshZone(obstacles[j], meshRenderer.bounds))
+                        {
+                            obstacles[j].SetActive(visible);
+                        }
+                    }
+                    else
+                    {
+                        obstacles.Remove(obstacles[j]);
                     }
                 }
                 SetVisible(visible);

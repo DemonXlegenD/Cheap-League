@@ -18,23 +18,6 @@ public class CameraFollow : MonoBehaviour
     private bool cameraLocked = false;
     private List<InputAction> pressedKeys;
 
-    private Controls playerControls;
-
-    private void Awake()
-    {
-        playerControls = new Controls();
-    }
-
-    private void OnEnable()
-    {
-        playerControls.Gameplay.Camera.Enable();
-    }
-
-    private void OnDisable()
-    {
-        playerControls.Gameplay.Camera.Disable();
-    }
-
     private bool GetPressedKey(InputAction input)
     {
         if (input.ReadValue<float>() != 0)
@@ -64,6 +47,7 @@ public class CameraFollow : MonoBehaviour
         //HandleCamera();
         HandleTranslation();
         HandleRotation();
+        HandleFov();
     }
 
     private Vector3 GetTargetPos()
@@ -97,6 +81,18 @@ public class CameraFollow : MonoBehaviour
         else
         {
             transform.position = Vector3.Lerp(transform.position, targetPosition, translateSpeed * Time.deltaTime);
+        }
+    }
+
+    private void HandleFov()
+    {
+        float speed = target.GetComponent<Rigidbody>().velocity.magnitude;
+        Debug.Log("Speed: " + speed);
+        if (speed > 55) {
+            GetComponent<Camera>().fieldOfView = Mathf.Lerp(GetComponent<Camera>().fieldOfView, fov + 10, Time.deltaTime * 10);
+        } else
+        {
+            GetComponent<Camera>().fieldOfView = Mathf.Lerp(GetComponent<Camera>().fieldOfView, fov, Time.deltaTime * 10);
         }
     }
 

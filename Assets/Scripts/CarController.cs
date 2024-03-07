@@ -295,14 +295,14 @@ public class CarController : MonoBehaviour
         {
             if (isHandbreaking == 0)
             {
-                rb.AddTorque(Vector3.up * horizontalInput * rb.mass * maxSteeringAngle / 2);
+                rb.AddTorque(transform.up * horizontalInput * rb.mass * maxSteeringAngle / 2);
 
                 Vector3 localVelocity = transform.InverseTransformDirection(rb.velocity);
                 localVelocity.x = 0;
                 rb.velocity = transform.TransformDirection(localVelocity);
             } else
             {
-                rb.AddTorque(Vector3.up * horizontalInput * rb.mass * maxSteeringAngle / 2);
+                rb.AddTorque(transform.up * horizontalInput * rb.mass * maxSteeringAngle / 2);
             }
         }
     }

@@ -24,26 +24,37 @@ public class ObstacleSpawner : MonoBehaviour
         while (tries < maxTries)
         {
             //Ca ne marche pas, peut etre à cause de la génération procédurale... le fait que ca soit un mesh?
-            RaycastHit hitRc;
+            /* RaycastHit hitRc;
+             Vector3 randomPoint = GenerateRandomPoint(chunkMin, chunkMax);
+             bool hit = Physics.Raycast(randomPoint, Vector3.down, out hitRc, Mathf.Infinity, groundLayer);
+
+             if (hit)
+             {
+                 Debug.Log(hitRc.point);
+                 bool canPlace = CheckObstaclePlacement(hitRc.point);
+
+                 if (canPlace)
+                 {
+
+                     GameObject newObstacle = Instantiate(obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)], hitRc.point, Quaternion.identity);
+                     if (parentGameObject != null)
+                     {
+                         newObstacle.transform.parent = parentGameObject.transform;
+                     }
+                     return newObstacle;
+                 }
+             }*/
             Vector3 randomPoint = GenerateRandomPoint(chunkMin, chunkMax);
-            bool hit = Physics.Raycast(randomPoint, Vector3.down, out hitRc, Mathf.Infinity, groundLayer);
-            
-            if (hit)
+            if(CheckObstaclePlacement(randomPoint) && IsInForbiddenZone(randomPoint))
             {
-                Debug.Log(hitRc.point);
-                bool canPlace = CheckObstaclePlacement(hitRc.point);
-
-                if (canPlace)
+                GameObject newObstacle = Instantiate(obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)], randomPoint, Quaternion.identity);
+                if (parentGameObject != null)
                 {
-
-                    GameObject newObstacle = Instantiate(obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)], hitRc.point, Quaternion.identity);
-                    if (parentGameObject != null)
-                    {
-                        newObstacle.transform.parent = parentGameObject.transform;
-                    }
-                    return newObstacle;
+                    newObstacle.transform.parent = parentGameObject.transform;
                 }
+                return newObstacle;
             }
+
             tries++;
         }
         return null;
@@ -51,7 +62,7 @@ public class ObstacleSpawner : MonoBehaviour
 
     Vector3 GenerateRandomPoint(Vector2 chunkMin, Vector2 chunkMax)
     {
-        Vector3 randomPoint = new Vector3(Random.Range(chunkMin.x, chunkMax.x), 100, Random.Range(chunkMin.y, chunkMax.y));
+        Vector3 randomPoint = new Vector3(Random.Range(chunkMin.x, chunkMax.x), -4, Random.Range(chunkMin.y, chunkMax.y));
         return randomPoint;
     }
 
@@ -67,16 +78,6 @@ public class ObstacleSpawner : MonoBehaviour
                 return false;
             }
         }
-
-        // Vérifier s'il y a des obstacles proches
-        Collider[] nearbyColliders = Physics.OverlapSphere(position, minDistanceBetweenObstacles);
-        if (nearbyColliders.Length > 1) // Compte le collider de l'obstacle que nous allons placer
-        {
-            return false;
-        }
-
-        // Vous pouvez ajouter d'autres vérifications ici, par exemple, s'il est trop près du joueur, etc.
-
         return true;
     }
 

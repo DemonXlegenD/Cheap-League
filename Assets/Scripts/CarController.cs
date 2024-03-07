@@ -86,6 +86,10 @@ public class CarController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass += new Vector3(0, -1f, 0);
         pressedKeys = new List<InputAction>();
+        if (!ball)
+        {
+            ball = GameObject.FindGameObjectWithTag("Ball");
+        }
 
         Physics.IgnoreCollision(ball.GetComponent<Collider>(), frontLeftWheelCollider.GetComponent<Collider>());
         Physics.IgnoreCollision(ball.GetComponent<Collider>(), frontRightWheelCollider.GetComponent<Collider>());
@@ -342,13 +346,14 @@ public class CarController : MonoBehaviour
                     }
                     else
                     {
-                        rb.AddForce(transform.up * rb.mass * jumpForce);
+                        rb.AddForce(transform.up * rb.mass * jumpForce/2);
                         JumpSound.Play();
                     }
                 }
             }
             else
             {
+                verticalInput = 0f;
                 rb.AddForce(transform.up * rb.mass * jumpForce);
                 JumpSound.Play();
             }

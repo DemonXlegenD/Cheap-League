@@ -56,6 +56,10 @@ public class CameraFollow : MonoBehaviour
     {
         pressedKeys = new List<InputAction>();
         GetComponent<Camera>().fieldOfView = fov;
+        if (!ball)
+        {
+            ball = GameObject.FindGameObjectWithTag("Ball").transform;
+        }
     }
 
     private void FixedUpdate()
@@ -120,7 +124,7 @@ public class CameraFollow : MonoBehaviour
             arrowPointer.transform.LookAt(ball.position);
             arrowPointer.transform.Rotate(90, 0, 0);
 
-            targetPosition = target.TransformPoint(offset);
+            targetPosition = target.TransformPoint(new Vector3(0, 0, offset.z)) + new Vector3(0, offset.y, 0);
             TranslateCamera(targetPosition);
             //transform.position = Vector3.Lerp(transform.position + new Vector3(0, 2, 0), targetPosition, translateSpeed * Time.deltaTime);
         }

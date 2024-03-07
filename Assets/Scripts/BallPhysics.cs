@@ -36,10 +36,11 @@ public class BallPhysics : MonoBehaviour
             if (playerRb != null)
             {
                 Debug.Log("hit player");
-                Vector3 forceDirection = transform.position - playerRb.centerOfMass;
-                Vector3 relativeVelocity = playerRb.GetRelativePointVelocity(transform.position - playerRb.centerOfMass);
+                Vector3 forceDirection = collision.contacts[0].point - playerRb.centerOfMass;
+                Vector3 relativeVelocity = playerRb.GetRelativePointVelocity(forceDirection);
 
-                rb.AddForce(forceDirection * Vector3.Dot(forceDirection.normalized, relativeVelocity) * magnitudeForce, ForceMode.Impulse);
+                //rb.AddForce(forceDirection * Vector3.Dot(forceDirection.normalized, relativeVelocity) * magnitudeForce, ForceMode.Impulse);
+                rb.AddForce(forceDirection.normalized, ForceMode.Impulse);
             }
         } else
         {

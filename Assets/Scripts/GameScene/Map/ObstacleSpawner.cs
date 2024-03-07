@@ -24,28 +24,28 @@ public class ObstacleSpawner : MonoBehaviour
         while (tries < maxTries)
         {
             //Ca ne marche pas, peut etre à cause de la génération procédurale... le fait que ca soit un mesh?
-            /* RaycastHit hitRc;
-             Vector3 randomPoint = GenerateRandomPoint(chunkMin, chunkMax);
-             bool hit = Physics.Raycast(randomPoint, Vector3.down, out hitRc, Mathf.Infinity, groundLayer);
-
-             if (hit)
-             {
-                 Debug.Log(hitRc.point);
-                 bool canPlace = CheckObstaclePlacement(hitRc.point);
-
-                 if (canPlace)
-                 {
-
-                     GameObject newObstacle = Instantiate(obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)], hitRc.point, Quaternion.identity);
-                     if (parentGameObject != null)
-                     {
-                         newObstacle.transform.parent = parentGameObject.transform;
-                     }
-                     return newObstacle;
-                 }
-             }*/
+            /*RaycastHit hitRc;
             Vector3 randomPoint = GenerateRandomPoint(chunkMin, chunkMax);
-            if(CheckObstaclePlacement(randomPoint) && IsInForbiddenZone(randomPoint))
+            bool hit = Physics.Raycast(randomPoint, Vector3.down, out hitRc, Mathf.Infinity, groundLayer);
+
+            if (hit)
+            {
+                Debug.Log(hitRc.point);
+                bool canPlace = CheckObstaclePlacement(hitRc.point);
+
+                if (canPlace)
+                {
+
+                    GameObject newObstacle = Instantiate(obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)], hitRc.point, Quaternion.identity);
+                    if (parentGameObject != null)
+                    {
+                        newObstacle.transform.parent = parentGameObject.transform;
+                    }
+                    return newObstacle;
+                }
+            }*/
+            Vector3 randomPoint = GenerateRandomPoint(chunkMin, chunkMax);
+            if(CheckObstaclePlacement(randomPoint) && !IsInForbiddenZone(randomPoint))
             {
                 GameObject newObstacle = Instantiate(obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)], randomPoint, Quaternion.identity);
                 if (parentGameObject != null)

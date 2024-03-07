@@ -7,9 +7,9 @@
             "actions": [
                 {
                     "name": "Move",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "273c73cd-080d-4275-9784-6abcf0912734",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -43,9 +43,9 @@
                 },
                 {
                     "name": "Aerial",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "2ebec8ad-a6d9-4658-9cd2-8bb10386aed5",
-                    "expectedControlType": "",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -76,13 +76,22 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Handbrake",
+                    "type": "Button",
+                    "id": "d17eb1c7-429b-41b8-be5b-2dc94509990f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "ControllerMove",
                     "id": "3a3da269-ea33-4e74-b42d-8d859b1e7ee4",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=2)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -256,20 +265,9 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "f6f51b6f-70ff-495e-883f-8c4aeec0e861",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Aerial",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
                     "name": "ControllerAerial",
                     "id": "9af073b9-e51b-4927-b365-ba1459c3992a",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=2)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -324,7 +322,7 @@
                 {
                     "name": "KeyboardAerial",
                     "id": "3b1c2812-d8ed-4f7d-b4bb-6632216dff94",
-                    "path": "2DVector",
+                    "path": "2DVector(mode=1)",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -439,6 +437,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Roll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "442a46f8-418b-464d-86fd-7d8dd4dbe4f3",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Handbrake",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "81b79549-14de-4e3a-92b4-340321cf7f39",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Handbrake",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

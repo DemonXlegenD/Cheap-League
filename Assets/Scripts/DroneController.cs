@@ -47,25 +47,25 @@ public class DroneController : MonoBehaviour
 
             if ((transform.position - ball.transform.position).magnitude < ballDetectionDistance && attachDebounce == 0f)
             {
-                Debug.Log("ball detected!");
+                //Debug.Log("ball detected!");
                 rb.AddForce((transform.position - ball.transform.position + new Vector3(0, -ball.transform.localScale.y / 2, 0)).normalized * -droneSpeed * 3);
                 if ((transform.position - ball.transform.position).magnitude < 5)
                 {
                     ballAttached = true;
                     newPos = GetRandomPos();
-                    Debug.Log("Ball stolen");
+                    //Debug.Log("Ball stolen");
                 }
             }
             else
             {
                 if ((transform.position - newPos).magnitude < 5)
                 {
-                    Debug.Log("position reached !");
+                   // Debug.Log("position reached !");
                     newPos = GetRandomPos();
                 }
                 else
                 {
-                    Debug.Log("trying to reach position. distance: " + (transform.position - newPos).magnitude);
+                    //Debug.Log("trying to reach position. distance: " + (transform.position - newPos).magnitude);
                     rb.AddForce((transform.position - newPos).normalized * -droneSpeed);
                 }
             }

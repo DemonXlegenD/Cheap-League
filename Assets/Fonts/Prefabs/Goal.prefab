@@ -115,7 +115,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -4906,8 +4906,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 9617c24e3b61b924e86a95becad37f27, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_PlayOnAwake: 0
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -5455,6 +5455,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1930795014198541831}
     m_Modifications:
+    - target: {fileID: 78431535351800946, guid: b0595b19b15fa154e89d96599cdcbbcb,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2775516163681115184, guid: b0595b19b15fa154e89d96599cdcbbcb,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -5550,6 +5555,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 4772778714748191659, guid: b0595b19b15fa154e89d96599cdcbbcb,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5151185916881283049, guid: b0595b19b15fa154e89d96599cdcbbcb,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5612036553512313706, guid: b0595b19b15fa154e89d96599cdcbbcb,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -5564,6 +5579,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6978828995420989867, guid: b0595b19b15fa154e89d96599cdcbbcb,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7035746064673094001, guid: b0595b19b15fa154e89d96599cdcbbcb,
         type: 3}

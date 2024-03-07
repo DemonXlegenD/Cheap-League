@@ -84,7 +84,7 @@ public class CarController : MonoBehaviour
     {
         CarCollider.contactOffset = 0.1f;
         rb = GetComponent<Rigidbody>();
-        rb.centerOfMass += new Vector3(0, -1f, 0);
+        //rb.centerOfMass += new Vector3(0, -1f, 0);
         pressedKeys = new List<InputAction>();
         if (!ball)
         {
@@ -132,6 +132,7 @@ public class CarController : MonoBehaviour
             //rb.AddForce(transform.up * Physics.gravity.y * rb.mass * 1.2f);
         }
 
+        HandleTurtle();
         HandleBoostAmount();
         if (isBoosting > 0)
         {
@@ -144,13 +145,13 @@ public class CarController : MonoBehaviour
             }
         }
 
-
+        HandleTurn();
         UpdateWheels();
         if (IsGrounded())
         {
             rb.AddForce(transform.forward * motorForce * verticalInput);
         }
-        EngineSound.pitch = Mathf.Lerp(EngineSound.pitch, 1 + (rb.velocity.magnitude / 75) + ((rb.velocity.magnitude / 25) % 1.4f), 10 * Time.deltaTime);
+        EngineSound.pitch = Mathf.Lerp(EngineSound.pitch, 0.9f + (rb.velocity.magnitude / 75) + ((rb.velocity.magnitude / 25) % 1.3f), 10 * Time.deltaTime);
 
     }
 
@@ -185,6 +186,24 @@ public class CarController : MonoBehaviour
         return Physics.Raycast(transform.position, -transform.up, 1.5f);
     }
 
+    void HandleTurtle()
+    {
+        if (Physics.Raycast(transform.position, transform.up, 1.5f) && !IsGrounded()) {
+            rb.AddTorque(transform.forward * 40 * rb.mass);
+            Debug.Log(Quaternion.FromToRotation(transform.up, Vector3.up).eulerAngles);
+        }
+        if (Physics.Raycast(transform.position, transform.right, 1.5f) && !IsGrounded())
+        {
+            rb.AddTorque(transform.forward * 40 * rb.mass);
+            Debug.Log(Quaternion.FromToRotation(transform.up, Vector3.up).eulerAngles);
+        }
+        if (Physics.Raycast(transform.position, -transform.right, 1.5f) && !IsGrounded())
+        {
+            rb.AddTorque(transform.forward * -40 * rb.mass);
+            Debug.Log(Quaternion.FromToRotation(transform.up, Vector3.up).eulerAngles);
+        }
+    }
+
     public void HandleRollLeft(InputAction.CallbackContext context)
     {
         rollLeft = context.action.ReadValue<float>();
@@ -214,12 +233,12 @@ public class CarController : MonoBehaviour
         isFlicking = true;
         rb.constraints = RigidbodyConstraints.FreezePositionY;
         rb.angularDrag = 0.05f;
+        rb.angularVelocity = Vector3.zero;
 
         //flickPosition = new Vector3(flickPosition.x, 0, flickDirection.z);
         //flickDirection = new Vector3(flickDirection.x, 0, flickDirection.z);
 
-        rb.angularVelocity = Vector3.zero;
-        rb.AddForce(flickPosition * rb.mass * flickForce * 1.5f, ForceMode.Impulse);
+        rb.AddForce(flickPosition * rb.mass * flickForce * 3f, ForceMode.Impulse);
         rb.AddTorque(flickDirection * rb.mass * flickForce, ForceMode.Impulse);
 
         yield return new WaitForSeconds(0.75f);
@@ -227,37 +246,6 @@ public class CarController : MonoBehaviour
         rb.constraints = RigidbodyConstraints.None;
         rb.angularDrag = 5f;
         isFlicking = false;
-    }
-
-    private void OldAerialCarControl()
-    {
-
-        if (rollLeft > 0)
-        {
-            transform.Rotate(Vector3.back, rollRotationSpeed * 2 * rollLeft);
-        }
-
-        if (rollRight > 0)
-        {
-            transform.Rotate(Vector3.forward, rollRotationSpeed * 2 * rollRight);
-        }
-
-        if (roll > 0)
-        {
-            transform.Rotate(Vector3.back, rollRotationSpeed * 4 * horizontalInput);
-        }
-        else
-        {
-            if (horizontalInput > aerialDeadzone || horizontalInput < -aerialDeadzone)
-            {
-                transform.Rotate(Vector3.up, yawpitchRotationSpeed * 3 * horizontalInput);
-            }
-        }
-
-        if (verticalInput > aerialDeadzone || verticalInput < -aerialDeadzone)
-        {
-            transform.Rotate(Vector3.right, yawpitchRotationSpeed * 3 * verticalInput);
-        }
     }
 
     private void AerialCarControl()
@@ -287,18 +275,35 @@ public class CarController : MonoBehaviour
             {
                 if (horizontalInput > aerialDeadzone || horizontalInput < -aerialDeadzone)
                 {
-                    rb.AddRelativeTorque(Vector3.up * rollRotationSpeed * rb.mass * horizontalInput * 20);
+                    rb.AddRelativeTorque(Vector3.up * yawpitchRotationSpeed * rb.mass * horizontalInput * 20);
 
                     //transform.Rotate(Vector3.up, yawpitchRotationSpeed * 2 * horizontalInput);
                 }
             }
+
+            if (verticalInput > aerialDeadzone || verticalInput < -aerialDeadzone)
+            {
+                rb.AddRelativeTorque(Vector3.right * yawpitchRotationSpeed * rb.mass * verticalInput * 20);
+
+                //transform.Rotate(Vector3.right, yawpitchRotationSpeed * 2 * verticalInput);
+            }
         }
-
-        if (verticalInput > aerialDeadzone || verticalInput < -aerialDeadzone)
+    }
+    private void HandleTurn()
+    {
+        if (IsGrounded())
         {
-            rb.AddRelativeTorque(Vector3.right * rollRotationSpeed * rb.mass * verticalInput * 25);
+            if (isHandbreaking == 0)
+            {
+                rb.AddTorque(Vector3.up * horizontalInput * rb.mass * maxSteeringAngle / 2);
 
-            //transform.Rotate(Vector3.right, yawpitchRotationSpeed * 2 * verticalInput);
+                Vector3 localVelocity = transform.InverseTransformDirection(rb.velocity);
+                localVelocity.x = 0;
+                rb.velocity = transform.TransformDirection(localVelocity);
+            } else
+            {
+                rb.AddTorque(Vector3.up * horizontalInput * rb.mass * maxSteeringAngle / 2);
+            }
         }
     }
 
@@ -317,26 +322,26 @@ public class CarController : MonoBehaviour
                         Vector3 flickDirection = Vector3.zero;
                         if (verticalInput > flickDeadzone)
                         {
-                            flickPosition += transform.forward * verticalInput;
-                            flickDirection += transform.right;
+                            flickPosition += transform.forward;
+                            flickDirection += transform.right * 1.5f;
                         }
                         if (verticalInput < -flickDeadzone)
                         {
-                            flickPosition += transform.forward * verticalInput;
-                            flickDirection -= transform.right;
+                            flickPosition -= transform.forward;
+                            flickDirection -= transform.right * 1.5f;
                         }
                         if (horizontalInput > flickDeadzone)
                         {
-                            flickPosition += transform.right * horizontalInput;
-                            flickDirection -= transform.forward;
+                            flickPosition += transform.right;
+                            flickDirection -= transform.forward * 0.75f;
                         }
                         if (horizontalInput < -flickDeadzone)
                         {
-                            flickPosition += transform.right * horizontalInput;
-                            flickDirection += transform.forward;
+                            flickPosition -= transform.right;
+                            flickDirection += transform.forward * 0.75f;
                         }
 
-                        StartCoroutine(Flick(flickPosition.normalized, flickDirection.normalized));
+                        StartCoroutine(Flick(flickPosition.normalized, flickDirection));
 
                         dirr = flickDirection;
                         dirr2 = flickPosition;
@@ -378,7 +383,9 @@ public class CarController : MonoBehaviour
     {
         isHandbreaking = context.action.ReadValue<float>();
 
-        float newStiffness = 2f;
+        Debug.Log(isHandbreaking);
+
+/*        float newStiffness = 6f;
         if (isHandbreaking > 0) {
             newStiffness = 0.5f;
         }
@@ -388,7 +395,7 @@ public class CarController : MonoBehaviour
         frontLeftWheelCollider.GetComponent<WheelCollider>().forwardFriction = friction;
         frontRightWheelCollider.GetComponent<WheelCollider>().sidewaysFriction = friction;
         rearLeftWheelCollider.GetComponent<WheelCollider>().sidewaysFriction = friction;
-        rearRightWheelCollider.GetComponent<WheelCollider>().sidewaysFriction = friction;
+        rearRightWheelCollider.GetComponent<WheelCollider>().sidewaysFriction = friction;*/
     }
 
     public void HandleSteering(InputAction.CallbackContext context)

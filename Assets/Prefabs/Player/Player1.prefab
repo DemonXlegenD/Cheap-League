@@ -5320,21 +5320,21 @@ WheelCollider:
     damper: 4500
     targetPosition: 0.5
   m_SuspensionDistance: 0.003
-  m_ForceAppPointDistance: 0
+  m_ForceAppPointDistance: 0.005
   m_Mass: 20
-  m_WheelDampingRate: 50
+  m_WheelDampingRate: 100
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 6
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 6
+    m_Stiffness: 2
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -5657,9 +5657,9 @@ MonoBehaviour:
   target: {fileID: 8287484269685638788}
   ball: {fileID: 0}
   arrowPointer: {fileID: 1466742185740085894}
-  offset: {x: 0, y: 4, z: -8}
-  translateSpeed: 20
-  rotationSpeed: 100
+  offset: {x: 0, y: 2, z: -8}
+  translateSpeed: 100
+  rotationSpeed: 300
   fov: 90
 --- !u!114 &2398173568161339405
 MonoBehaviour:
@@ -5768,21 +5768,21 @@ WheelCollider:
     damper: 4500
     targetPosition: 0.5
   m_SuspensionDistance: 0.003
-  m_ForceAppPointDistance: 0
+  m_ForceAppPointDistance: 0.005
   m_Mass: 20
-  m_WheelDampingRate: 50
+  m_WheelDampingRate: 100
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 6
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 6
+    m_Stiffness: 2
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -5839,21 +5839,21 @@ WheelCollider:
     damper: 4500
     targetPosition: 0.5
   m_SuspensionDistance: 0.003
-  m_ForceAppPointDistance: 0
+  m_ForceAppPointDistance: 0.005
   m_Mass: 20
-  m_WheelDampingRate: 50
+  m_WheelDampingRate: 100
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 6
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 6
+    m_Stiffness: 2
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -6173,10 +6173,10 @@ MonoBehaviour:
   motorForce: 50000
   brakeForce: 60000
   jumpForce: 900
-  flickForce: 10
+  flickForce: 5
   boostForce: 50
-  yawpitchRotationSpeed: 2
-  rollRotationSpeed: 2
+  yawpitchRotationSpeed: 1.5
+  rollRotationSpeed: 0.6
   flickDeadzone: 0.08
   aerialDeadzone: 0.01
   EngineSound: {fileID: 4630240363484846164}
@@ -6348,6 +6348,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 17320449-6810-4f9b-a08c-73e2ffe3e144
     m_ActionName: Gameplay/Roll[/DualShock4GamepadHID/leftShoulder,/Keyboard/shift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7931929559051501704}
+        m_TargetAssemblyTypeName: CarController, Assembly-CSharp
+        m_MethodName: HandleHandbrake
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d17eb1c7-429b-41b8-be5b-2dc94509990f
+    m_ActionName: Gameplay/Handbrake[/Keyboard/shift,/DualSenseGamepadHID/leftShoulder]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
@@ -6365,7 +6381,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 0d261ba871838c346afcaaf80fa84381, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -6854,21 +6870,21 @@ WheelCollider:
     damper: 4500
     targetPosition: 0.5
   m_SuspensionDistance: 0.003
-  m_ForceAppPointDistance: 0
+  m_ForceAppPointDistance: 0.005
   m_Mass: 20
-  m_WheelDampingRate: 50
+  m_WheelDampingRate: 100
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.8
     m_AsymptoteValue: 0.5
-    m_Stiffness: 6
+    m_Stiffness: 2
   m_SidewaysFriction:
     m_ExtremumSlip: 0.2
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
-    m_Stiffness: 6
+    m_Stiffness: 2
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

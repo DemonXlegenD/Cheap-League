@@ -7,7 +7,7 @@ public class BallPhysics : MonoBehaviour
     [SerializeField] private float magnitudeForce = 10f;
     [SerializeField] private float friction = 0.2f;
     [SerializeField] private float deceleration = 0.1f;
-    [SerializeField] private float initialMass = 50f;
+    [SerializeField] private float initialMass = 250f;
     [SerializeField] private float bounciness = 10f;
 
     private Rigidbody rb;

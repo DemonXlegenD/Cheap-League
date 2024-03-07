@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
-using static UnityEngine.GraphicsBuffer;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -111,22 +108,22 @@ public class CameraFollow : MonoBehaviour
         {
             arrowPointer.SetActive(false);
             targetDirection = GetTargetPos() - ball.position + new Vector3(0, 5, 0);
-            targetPosition = GetTargetPos() + new Vector3(0, offset.y, 0) - (targetDirection.normalized * offset.z * 2);
+            targetPosition = GetTargetPos() + new Vector3(0, offset.y, 0) - (targetDirection.normalized * offset.z);
             //transform.position = Vector3.Lerp(transform.position, targetPosition, translateSpeed * Time.deltaTime);
             //TranslateCamera(targetPosition);
-            transform.position = Vector3.Lerp(GetTargetPos() + new Vector3(0, 1, 0), targetPosition, translateSpeed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, targetPosition, translateSpeed * Time.deltaTime);
             //transform.LookAt(target.position);
         } else
         {
             arrowPointer.SetActive(true);
             targetDirection = ball.position - GetTargetPos();
-            arrowPointer.transform.position = GetTargetPos() + (targetDirection.normalized * 2);
-            arrowPointer.transform.LookAt(ball.position);
-            arrowPointer.transform.Rotate(90, 0, 0);
+            arrowPointer.transform.position = GetTargetPos() + (targetDirection.normalized * 2.5f);
+            arrowPointer.transform.rotation = Quaternion.LookRotation(targetDirection) * Quaternion.Euler(90, 0, 0);
 
-            targetPosition = target.TransformPoint(new Vector3(0, 0, offset.z)) + new Vector3(0, offset.y, 0);
-            TranslateCamera(targetPosition);
-            //transform.position = Vector3.Lerp(transform.position + new Vector3(0, 2, 0), targetPosition, translateSpeed * Time.deltaTime);
+            //targetPosition = target.TransformPoint(new Vector3(0, 0, offset.z)) + new Vector3(0, offset.y, 0);
+            targetPosition = GetTargetPos() + new Vector3(0, offset.y, 0) + (target.forward * offset.z);
+            //TranslateCamera(targetPosition);
+            transform.position = Vector3.Lerp(transform.position, targetPosition, translateSpeed * Time.deltaTime);
         }
 
         //var finalPos = Physics.Raycast(transform.position, targetPosition.normalized, targetPosition.magnitude);
@@ -134,7 +131,7 @@ public class CameraFollow : MonoBehaviour
     }
     private void HandleRotation()
     {
-        var direction = GetTargetPos() - transform.position;
+        var direction = target.forward;
         if (cameraLocked)
         {
             direction = ball.position - transform.position;

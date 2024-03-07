@@ -1,4 +1,4 @@
-ENH: Fin Mode de jeu GOAL
+FIX: Particules Stamina
 
-- Mode de jeu GOAL terminé
-- Revoir avec le prof la génération des obstacles
+- Stamina bloquée pendant deux secondes quand elle est vide
+- Particules jouées au bon moment

@@ -24,6 +24,7 @@ public class CarController : MonoBehaviour
     public float boostAmount = 100f;
     private float leftRecuperationDelay = 0f;
     private float recuperationDelay = 2;
+    public bool blockBoost = false;
 
     private List<InputAction> pressedKeys;
 
@@ -95,6 +96,7 @@ public class CarController : MonoBehaviour
         Physics.IgnoreCollision(ball.GetComponent<Collider>(), frontRightWheelCollider.GetComponent<Collider>());
         Physics.IgnoreCollision(ball.GetComponent<Collider>(), rearLeftWheelCollider.GetComponent<Collider>());
         Physics.IgnoreCollision(ball.GetComponent<Collider>(), rearRightWheelCollider.GetComponent<Collider>());
+        BoostGameObject.GetComponent<ParticleSystem>().Stop();
     }
 
     private bool GetPressedKey(InputAction input)
@@ -125,7 +127,8 @@ public class CarController : MonoBehaviour
                 canFlick = false;
             }
             rb.AddForce(Vector3.up * Physics.gravity.y * rb.mass);
-        } else
+        }
+        else
         {
             timeInAir = 0;
             canFlick = true;
@@ -133,12 +136,14 @@ public class CarController : MonoBehaviour
         }
 
         HandleBoostAmount();
+       
         if (isBoosting > 0)
         {
             if (boostAmount > 0)
             {
                 rb.AddForce(-BoostGameObject.transform.right * rb.mass * boostForce * isBoosting);
-            } else
+            }
+            else
             {
                 BoostGameObject.GetComponent<ParticleSystem>().Stop();
             }
@@ -156,28 +161,52 @@ public class CarController : MonoBehaviour
 
     public void HandleBoostAmount()
     {
-        if (isBoosting > 0)
+        if (!blockBoost)
         {
-            boostAmount -= Time.deltaTime * 20;
-        }
-        else
-        {
-            if (boostAmount < 100)
+            if (isBoosting > 0)
             {
-                boostAmount += Time.deltaTime * 20;
+                boostAmount -= Time.deltaTime * 30;
+                if (BoostGameObject.GetComponent<ParticleSystem>().isStopped) BoostGameObject.GetComponent<ParticleSystem>().Play();
             }
             else
             {
-                boostAmount = 100;
+                if (boostAmount < 100)
+                {
+                    boostAmount += Time.deltaTime * 20;
+                }
+                else
+                {
+                    boostAmount = 100;
+                    leftRecuperationDelay = 0f;
+                }
+            }
+
+            if (boostAmount <= 0f)
+            {
+                boostAmount = 0f;
                 leftRecuperationDelay = 0f;
+                blockBoost = true;
+
+            }
+        }
+        else
+        {
+            if(leftRecuperationDelay <= recuperationDelay)
+            {
+                leftRecuperationDelay += Time.deltaTime;
+            }
+            else
+            {
+                if(boostAmount >= 100f)
+                {
+                    leftRecuperationDelay = 0f;
+                    boostAmount = 100f;
+                    blockBoost = false;
+                }
+                boostAmount += Time.deltaTime * 40;
             }
         }
 
-        if (boostAmount <= 0f)
-        {
-            boostAmount = 0f;
-            leftRecuperationDelay = recuperationDelay;
-        }
     }
 
     bool IsGrounded()
@@ -203,7 +232,8 @@ public class CarController : MonoBehaviour
 
     public void HandleAerial(InputAction.CallbackContext context)
     {
-        if (!IsGrounded()) {
+        if (!IsGrounded())
+        {
             horizontalInput = context.action.ReadValue<Vector2>().x;
             verticalInput = context.action.ReadValue<Vector2>().y;
         }
@@ -346,7 +376,7 @@ public class CarController : MonoBehaviour
                     }
                     else
                     {
-                        rb.AddForce(transform.up * rb.mass * jumpForce/2);
+                        rb.AddForce(transform.up * rb.mass * jumpForce / 2);
                         JumpSound.Play();
                     }
                 }
@@ -364,7 +394,7 @@ public class CarController : MonoBehaviour
     {
         isBoosting = context.action.ReadValue<float>();
 
-        if (isBoosting > 0 && boostAmount > 0)
+        if (isBoosting > 0 && boostAmount > 0 && !blockBoost)
         {
             BoostGameObject.GetComponent<ParticleSystem>().Play();
         }
@@ -379,7 +409,8 @@ public class CarController : MonoBehaviour
         isHandbreaking = context.action.ReadValue<float>();
 
         float newStiffness = 2f;
-        if (isHandbreaking > 0) {
+        if (isHandbreaking > 0)
+        {
             newStiffness = 0.5f;
         }
 

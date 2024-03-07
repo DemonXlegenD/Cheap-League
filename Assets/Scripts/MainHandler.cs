@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class MainHandler : MonoBehaviour
 {
@@ -29,6 +30,16 @@ public class MainHandler : MonoBehaviour
         
     }
 
+    public void OnPlayerJoin(PlayerInput playerInput)
+    {
+        Debug.Log(playerInput.gameObject.name);
+        if (playerInput.gameObject != player1)
+        {
+            playerInput.gameObject.name = "Player2";
+            player2 = playerInput.gameObject;
+        }
+    }
+
     void OnGoalScored()
     {
         ball.transform.position = new Vector3(0, 1.0f, 0);
@@ -40,10 +51,13 @@ public class MainHandler : MonoBehaviour
         player1.GetComponent<Rigidbody>().velocity = Vector3.zero;
         player1.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
-        player2.transform.position = new Vector3(0, 2, 35);
-        player2.transform.rotation = Quaternion.Euler(0, 180, 0);
-        player2.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        player2.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        if (player2 != null)
+        {
+            player2.transform.position = new Vector3(0, 2, 35);
+            player2.transform.rotation = Quaternion.Euler(0, 180, 0);
+            player2.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            player2.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        }
 
         Debug.Log("Scored !!!");
 

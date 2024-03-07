@@ -10,18 +10,18 @@ public class LoadingBar : MonoBehaviour
     [Header("Player")]
     [SerializeField] private GameObject player;
 
-    private PlayerController fpsController;
+    private CarController CarController;
 
     // Start is called before the first frame update
     void Start()
     {
-        fpsController = player.GetComponent<PlayerController>();
+        CarController = player.GetComponent<CarController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        float progressValue = Mathf.Clamp01(fpsController.Stamina / fpsController.MaxStamina);
+        float progressValue = Mathf.Clamp01(CarController.boostAmount / 100);
         GetComponent<Slider>().value = progressValue;
     }
 }

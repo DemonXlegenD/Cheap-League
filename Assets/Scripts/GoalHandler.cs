@@ -24,6 +24,9 @@ public class GoalHandler : MonoBehaviour
             Debug.Log(colorTeam + " SCORED !");
             mainHandler.GetTeamManager().GetTeamByColor(colorTeam).GetComponent<Team>().TeamHasScored();
             mainHandler.m_OnGoalScored.Invoke();
+            this.GetComponent<ParticleSystem>().Play();
+            this.GetComponent<AudioSource>().Play();
+            this.GetComponent<AudioSource>().time = 0.7f;
         }
     }
 }

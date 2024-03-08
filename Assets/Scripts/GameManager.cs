@@ -5,7 +5,6 @@ public class GameManager : MonoBehaviour
 {
 
     private static GameManager _instance;
-
     public static GameManager Instance
     {
         get
@@ -24,7 +23,11 @@ public class GameManager : MonoBehaviour
         } 
     }
 
+    public GameObject player1;
+    public GameObject player2;
+
     private string previousLoadedScene = null;
+    private int numberPlayers = 1;
 
     private void Awake()
     {
@@ -38,6 +41,16 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
         }
         previousLoadedScene = SceneManager.GetActiveScene().name;
+    }
+
+    private void Update()
+    {
+        if(Input.GetKey(KeyCode.Escape)) 
+        {
+            if (SceneManager.GetActiveScene().name == "Menu Scene") Quit();
+            else ChangeScene("Menu Scene");
+        }
+
     }
 
     public void StartGame()
@@ -54,6 +67,11 @@ public class GameManager : MonoBehaviour
     public void LoadPreviousScene()
     {
         SceneManager.LoadScene(previousLoadedScene);
+    }
+
+    public void SetNumberPlayers(int _numberPlayers)
+    {
+        numberPlayers = _numberPlayers;
     }
 
     public void Quit()

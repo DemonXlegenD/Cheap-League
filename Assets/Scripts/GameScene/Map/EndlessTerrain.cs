@@ -12,12 +12,12 @@ public class EndlessTerrain : MonoBehaviour
     public LODInfo[] detailLevels;
     public static float maxViewDst;
 
-    public Transform[] viewers;
+    public List<Transform> viewers;
     public Material mapMaterial;
 
     public static Vector2[] viewersPosition;
 
-    Vector2[] viewersPositionOld;
+    public Vector2[] viewersPositionOld;
 
     static MapGenerator mapGenerator;
     static BallGenerator ballGenerator;
@@ -44,6 +44,11 @@ public class EndlessTerrain : MonoBehaviour
         UpdateVisibleChunks();
     }
 
+    public void AddViewer(Transform viewer)
+    {
+        viewers.Add(viewer);
+    }
+
     private void OnDestroy()
     {
         terrainChunkDictionary.Clear();
@@ -54,14 +59,14 @@ public class EndlessTerrain : MonoBehaviour
     private void Update()
     {
         viewersPosition[0] = new Vector2(viewers[0].position.x, viewers[0].position.z) / 2f;
-        viewersPosition[1] = new Vector2(viewers[1].position.x, viewers[1].position.z) / 2f;
+        if (viewers.Count > 1) if(viewers[1] != null) viewersPosition[1] = new Vector2(viewers[1].position.x, viewers[1].position.z) / 2f;
 
         if ((viewersPositionOld[0] - viewersPosition[0]).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate)
         {
             viewersPositionOld[0] = viewersPosition[0];
             UpdateVisibleChunks();
         }
-        else if ((viewersPositionOld[1] - viewersPosition[1]).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate)
+        else if (viewers.Count > 1) if ((viewers[1] != null) && (viewersPositionOld[1] - viewersPosition[1]).sqrMagnitude > sqrViewerMoveThresholdForChunkUpdate)
         {
             viewersPositionOld[1] = viewersPosition[1];
             UpdateVisibleChunks();
@@ -78,7 +83,7 @@ public class EndlessTerrain : MonoBehaviour
         }
         terrainChunksVisibleLastUpdate.Clear();
 
-        for (int j = 0; j < viewers.Length; j++)
+        for (int j = 0; j < viewers.Count; j++)
         {
             int currentChunkCoordX = Mathf.RoundToInt(viewersPosition[j].x / chunkSize);
             int currentChunkCoordY = Mathf.RoundToInt(viewersPosition[j].y / chunkSize);
@@ -202,9 +207,12 @@ public class EndlessTerrain : MonoBehaviour
             if (mapDataReceived)
             {
                 float viewerDstFromNearestEdge = Mathf.Sqrt(bounds.SqrDistance(viewersPosition[0]));
-                float viewerDstFromNearestEdge2 = Mathf.Sqrt(bounds.SqrDistance(viewersPosition[1]));
-                bool visible = viewerDstFromNearestEdge <= maxViewDst || viewerDstFromNearestEdge2 <= maxViewDst;
-
+                float viewerDstFromNearestEdge2 = 0;
+                if (viewersPosition[1] != null) viewerDstFromNearestEdge2 = Mathf.Sqrt(bounds.SqrDistance(viewersPosition[1]));
+                bool visible = false;
+                if (viewersPosition[1] != null) visible = viewerDstFromNearestEdge <= maxViewDst || viewerDstFromNearestEdge2 <= maxViewDst;
+                else visible = viewerDstFromNearestEdge <= maxViewDst
+;
                 if (visible)
                 {
                     int lodIndex = 0;

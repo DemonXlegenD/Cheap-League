@@ -5614,7 +5614,8 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras: []
+  m_Cameras:
+  - {fileID: 8547759941151749862}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -5926,7 +5927,7 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.5
+    width: 1
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
@@ -6158,6 +6159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boostAmount: 100
+  blockBoost: 0
   ball: {fileID: 0}
   CarCollider: {fileID: 8307739944702011311}
   BoostGameObject: {fileID: 366631553596671196}

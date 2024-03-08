@@ -52,5 +52,7 @@ public class Score : MonoBehaviour
 
     public int GetMaxScore() { return maxScore; }
 
+    public bool IsScoreAtteint() { return maxScore == currentScore; }
+
     #endregion
 }

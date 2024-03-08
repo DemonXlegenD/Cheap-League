@@ -5,15 +5,21 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    [SerializeField] private Dropdown dropdown;
+
+    GameManager gameManager;
+    [SerializeField] private Dropdown dropdownMod;
+    [SerializeField] private Dropdown dropdownPlayers;
     [SerializeField] private MenuController menuController;
 
-    private string currentSelection;
+    private string currentSelectionMod;
+    private string currentSelectionPlayers;
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameManager.Instance;
         menuController = FindAnyObjectByType<MenuController>();
-        currentSelection = dropdown.DropdownOptions.CurrentSelection;
+        currentSelectionMod = dropdownMod.DropdownOptions.CurrentSelection;
+        currentSelectionPlayers = dropdownPlayers.DropdownOptions.CurrentSelection;
     }
 
     // Update is called once per frame
@@ -23,20 +29,29 @@ public class Room : MonoBehaviour
 
     public void OnChange()
     {
-        currentSelection = dropdown.DropdownOptions.CurrentSelection;
+        currentSelectionMod = dropdownMod.DropdownOptions.CurrentSelection;
     }
 
     public void OnStart()
     {
-        if(currentSelection == "TRAINING")
+        if (currentSelectionPlayers == "1")
+        {
+            gameManager.SetNumberPlayers(1);
+        }
+        else if (currentSelectionMod == "2")
+        {
+            gameManager.SetNumberPlayers(2);
+        }
+       
+        if (currentSelectionMod == "TRAINING")
         {
             menuController.ChangeScene("FieldScene");
         }
-        else if (currentSelection == "1 VS 1")
+        else if (currentSelectionMod == "1 VS 1")
         {
             menuController.ChangeScene("FieldScene");
         }
-        else if (currentSelection == "GOAL")
+        else if (currentSelectionMod == "GOAL")
         {
             menuController.ChangeScene("GameScene");
         }

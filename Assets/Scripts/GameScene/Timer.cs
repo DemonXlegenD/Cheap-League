@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Timer : MonoBehaviour
 {
@@ -15,7 +14,7 @@ public class Timer : MonoBehaviour
 
     //Each timer is in seconds
     [SerializeField] private float MaxTimer = 90;
-    [SerializeField] private float CurrentTimer;
+    [SerializeField] private float CurrentTimer = 90;
     [SerializeField] private string formatTimer;
 
     private bool IsStarted = false;
@@ -27,7 +26,6 @@ public class Timer : MonoBehaviour
     {
         gameManager = GameManager.Instance;
         ResetTimer();
-        StartTimer();
     }
 
     // Update is called once per frame
@@ -65,7 +63,6 @@ public class Timer : MonoBehaviour
         IsEnded = true;
         CurrentTimer = 0;
         OnEndTimer?.Invoke();
-        gameManager.ChangeScene("Menu Scene");
     }
 
 

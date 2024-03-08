@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class OpenPanelButton : MonoBehaviour
@@ -10,7 +8,6 @@ public class OpenPanelButton : MonoBehaviour
 
     private MenuController menuController;
 
-    // Start is called before the first frame update
     public void Start()
     {
         menuController = FindObjectOfType<MenuController>();    

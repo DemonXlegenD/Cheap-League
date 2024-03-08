@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,17 +12,11 @@ public class Information : MonoBehaviour
     public float fadeOutDelay = 2f; // Délai avant de commencer à disparaître
     public float fadeOutDuration = 0.5f; // Durée de fondu pour disparaître en secondes
 
-    // Start is called before the first frame update
     void Start()
     {
         SetVisible(false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void SetVisible(bool state)
     {

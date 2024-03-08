@@ -1,8 +1,5 @@
 #if UNITY_EDITOR
-using UnityEngine;
 using UnityEditor;
-using System.Collections.Generic;
-
 [CustomEditor(typeof(Collection<>))]
 public class CollectionEditor : Editor
 {

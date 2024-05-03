@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HideOnPlay : MonoBehaviour
 {
-
     void Start()
     {
         gameObject.SetActive(false);
     }
-
 }

@@ -293,11 +293,7 @@ public class EndlessTerrain : MonoBehaviour
 
         public bool IsInMeshZone(GameObject gameObject, Bounds bounds)
         {
-
-            // Récupérer les bounds du GameObject
             Bounds gameObjectBounds = gameObject.GetComponent<Renderer>().bounds;
-
-            // Vérifier si les bounds du GameObject intersectent les bounds du mesh
             return bounds.Intersects(gameObjectBounds);
         }
 

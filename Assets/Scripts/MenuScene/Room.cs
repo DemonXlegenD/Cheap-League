@@ -1,6 +1,4 @@
 using NovaSamples.UIControls;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Room : MonoBehaviour
@@ -13,7 +11,6 @@ public class Room : MonoBehaviour
 
     private string currentSelectionMod;
     private string currentSelectionPlayers;
-    // Start is called before the first frame update
     void Start()
     {
         gameManager = GameManager.Instance;
@@ -21,12 +18,6 @@ public class Room : MonoBehaviour
         currentSelectionMod = dropdownMod.DropdownOptions.CurrentSelection;
         currentSelectionPlayers = dropdownPlayers.DropdownOptions.CurrentSelection;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     public void OnChange()
     {
         currentSelectionMod = dropdownMod.DropdownOptions.CurrentSelection;
